@@ -1,0 +1,10 @@
+{
+    "python.testing.pytestArgs": [
+        "controller"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.pythonPath": "/usr/local/bin/python3",
+    "editor.fontSize": 15
+}
