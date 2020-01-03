@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ce032339-d56d-43f3-b023-693956a57b86" name="Default Changelist" comment="Create 'test/view_db.py'">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/delete_patient_db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/making_patient_db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/view_db.py" afterDir="false" />
+    <list default="true" id="ce032339-d56d-43f3-b023-693956a57b86" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/create_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/create_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/datamanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/datamanager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/patient.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/delete_patient_db" beforeDir="false" afterPath="$PROJECT_DIR$/test/delete_patient_db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,27 +45,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.making_patient_db">
-    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="ctrondomize" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="/usr/local/bin/python3.8" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/controller" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/controller/__init__.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="create_db" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ctrondomize" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -108,6 +81,27 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/controller/datamanager.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="delete_patient_db" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ctrondomize" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/delete_patient_db" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -160,8 +154,8 @@
       <list>
         <item itemvalue="Python.making_patient_db" />
         <item itemvalue="Python.view_db" />
+        <item itemvalue="Python.delete_patient_db" />
         <item itemvalue="Python.create_db" />
-        <item itemvalue="Python.datamanager" />
         <item itemvalue="Python.datamanager" />
       </list>
     </recent_temporary>
@@ -189,14 +183,27 @@
       <option name="presentableId" value="Default" />
       <updated>1576648176139</updated>
     </task>
+    <task id="LOCAL-00001" summary="Create table 4th row as group">
+      <created>1578056941040</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1578056941040</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Create 'test/view_db.py'" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create 'test/view_db.py'" />
+    <MESSAGE value="Create table 4th row as group" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create table 4th row as group" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="440" y="189" key="#Inspections" timestamp="1578059163103">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="440" y="189" key="#Inspections/0.0.1680.1050@0.0.1680.1050" timestamp="1578059163103" />
     <state x="410" y="63" key="#__init__" timestamp="1577109266283">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -213,10 +220,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="410" y="63" key="#datamanager/0.0.1440.900/-1600.0.1600.900@0.0.1440.900" timestamp="1577109211278" />
-    <state x="462" y="147" key="CommitChangelistDialog2" timestamp="1578056521536">
+    <state x="462" y="147" key="CommitChangelistDialog2" timestamp="1578056940593">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="462" y="147" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1578056521536" />
+    <state x="462" y="147" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1578056940593" />
     <state x="543" y="246" key="FileChooserDialogImpl" timestamp="1577801629984">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -225,26 +232,26 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="709" y="426" key="Github.ShareDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1578032206703" />
-    <state width="1659" height="219" key="GridCell.Tab.0.bottom" timestamp="1578056897805">
+    <state width="1659" height="219" key="GridCell.Tab.0.bottom" timestamp="1578059321406">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1419" height="238" key="GridCell.Tab.0.bottom/0.0.1440.900/-1600.0.1600.900@0.0.1440.900" timestamp="1577190456076" />
-    <state width="1659" height="219" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1578056897805" />
-    <state width="1659" height="219" key="GridCell.Tab.0.center" timestamp="1578056897804">
+    <state width="1659" height="219" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1578059321406" />
+    <state width="1659" height="219" key="GridCell.Tab.0.center" timestamp="1578059321404">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1419" height="238" key="GridCell.Tab.0.center/0.0.1440.900/-1600.0.1600.900@0.0.1440.900" timestamp="1577190456074" />
-    <state width="1659" height="219" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1578056897804" />
-    <state width="1659" height="219" key="GridCell.Tab.0.left" timestamp="1578056897803">
+    <state width="1659" height="219" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1578059321404" />
+    <state width="1659" height="219" key="GridCell.Tab.0.left" timestamp="1578059321404">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1419" height="238" key="GridCell.Tab.0.left/0.0.1440.900/-1600.0.1600.900@0.0.1440.900" timestamp="1577190456072" />
-    <state width="1659" height="219" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1578056897803" />
-    <state width="1659" height="219" key="GridCell.Tab.0.right" timestamp="1578056897804">
+    <state width="1659" height="219" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1578059321404" />
+    <state width="1659" height="219" key="GridCell.Tab.0.right" timestamp="1578059321405">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1419" height="238" key="GridCell.Tab.0.right/0.0.1440.900/-1600.0.1600.900@0.0.1440.900" timestamp="1577190456075" />
-    <state width="1659" height="219" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1578056897804" />
+    <state width="1659" height="219" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1578059321405" />
     <state width="1659" height="358" key="GridCell.Tab.1.bottom" timestamp="1577806542272">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
