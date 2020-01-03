@@ -17,7 +17,9 @@ class DataManager(object):
         conn = sqlite3.connect('../data/patient.db')
         logging.info(msg='Connecting database' + 'from' + os.getcwd())
         conn.close()
-        
+
+    def input_case(self, hospital, patient_name, group)
+
     def __del__(self):
         conn = sqlite3.connect('../data/' + self.n_db + '.db')
         conn.close()
