@@ -18,7 +18,7 @@ logging.info(msg='Connecting database' + 'from' + os.getcwd())
 
 # Create Table
 cursor.execute(
-    "CREATE TABLE IF NOT EXISTS patient (id INTEGER PRIMARY KEY AUTOINCREMENT, hospital TEXT, name TEXT, group TEXT)")
+    "CREATE TABLE IF NOT EXISTS patient (id INTEGER PRIMARY KEY AUTOINCREMENT, hospital TEXT, name TEXT, assignd_group TEXT)")
 logging.info(msg='Create patient table' + 'from' + os.getcwd())
 
 cursor.execute('SELECT * FROM patient ORDER BY id ASC')

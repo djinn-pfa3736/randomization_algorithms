@@ -1,8 +1,7 @@
-import os
 import logging
-
+import os
 # Set directory
-# directory is set to as test
+# * directory is set to as test
 from pyclbr import Class
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
