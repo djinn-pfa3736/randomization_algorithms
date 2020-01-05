@@ -44,7 +44,7 @@ class DataManager:
     """
 
 if __name__ == "__main__":
-    file_name = sys.argv[1]
+    # file_name = sys.argv[1]
     # Set directory
     # *  directory is set to as data manager
     # os.chdir(os.path.dirname(os.path.abspath(__file__)))
