@@ -44,12 +44,10 @@ class DataManager:
         for row in self.cursor.fetchall():
             print(row)
 
-    """
     def __del__(self):
         conn = sqlite3.connect('../data/' + self.n_db + '.db')
         conn.close()
         logging.info(msg='Disconnecting database')
-    """
 
 
 if __name__ == "__main__":
