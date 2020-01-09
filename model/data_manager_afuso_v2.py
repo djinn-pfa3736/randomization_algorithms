@@ -6,8 +6,13 @@ import sys
 import random
 
 import pdb
+# Set directory
+# *  directory is set to as data manager
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # class DataManager(object):
+
+
 class DataManager:
     def __init__(self):
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -27,10 +32,13 @@ class DataManager:
         # pdb.set_trace()
         for row in self.cursor.fetchall():
             if random.random() > 0.5:
-                self.cursor.execute("insert into assignment(assign) values('Control')")
+                self.cursor.execute(
+                    "insert into assignment(assign) values('Control')")
             else:
-                self.cursor.execute("insert into assignment(assign) values('Treat')")
-        self.cursor.execute("SELECT * FROM patient INNER JOIN assignment ON patient.id = assignment.id")
+                self.cursor.execute(
+                    "insert into assignment(assign) values('Treat')")
+        self.cursor.execute(
+            "SELECT * FROM patient INNER JOIN assignment ON patient.id = assignment.id")
 
     def print_db(self):
         for row in self.cursor.fetchall():
@@ -43,11 +51,10 @@ class DataManager:
         logging.info(msg='Disconnecting database')
     """
 
+
 if __name__ == "__main__":
-    # file_name = sys.argv[1]
-    # Set directory
     # *  directory is set to as data manager
-    # os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     data_manager = DataManager()
 
@@ -57,11 +64,16 @@ if __name__ == "__main__":
 
     # pdb.set_trace()
 
-    data_manager.cursor.execute("insert into patient(hospital, name) values('Nakagami', 'Gushiken')")
-    data_manager.cursor.execute("insert into patient(hospital, name) values('Nakagami', 'Ueda')")
-    data_manager.cursor.execute("insert into patient(hospital, name) values('Nakagami', 'Tamaki')")
-    data_manager.cursor.execute("insert into patient(hospital, name) values('Nakagami', 'Shiroma')")
-    data_manager.cursor.execute("insert into patient(hospital, name) values('Nakagami', 'Afuso')")
+    data_manager.cursor.execute(
+        "insert into patient(hospital, name) values('Nakagami', 'Gushiken')")
+    data_manager.cursor.execute(
+        "insert into patient(hospital, name) values('Nakagami', 'Ueda')")
+    data_manager.cursor.execute(
+        "insert into patient(hospital, name) values('Nakagami', 'Tamaki')")
+    data_manager.cursor.execute(
+        "insert into patient(hospital, name) values('Nakagami', 'Shiroma')")
+    data_manager.cursor.execute(
+        "insert into patient(hospital, name) values('Nakagami', 'Afuso')")
 
     data_manager.simple_randomization()
     data_manager.print_db()
