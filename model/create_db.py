@@ -1,7 +1,7 @@
 # Import packages
+import logging
 import os
 import sqlite3
-import logging
 
 # Set directory
 # *  directory is set to as data manager
@@ -18,7 +18,9 @@ logging.info(msg='Connecting database' + 'from' + os.getcwd())
 
 # Create Table
 cursor.execute(
-    "CREATE TABLE IF NOT EXISTS patient (id INTEGER PRIMARY KEY AUTOINCREMENT, hospital TEXT, name TEXT, assignd_group TEXT, exclusion INTEGER)")
+    "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
+    AUTOINCREMENT, recruted_date TEXT,hospital TEXT, patient_name TEXT,\
+     assign TEXT, exclusion INTEGER)")
 logging.info(msg='Create patient table' + 'from' + os.getcwd())
 
 cursor.execute('SELECT * FROM patient ORDER BY id ASC')

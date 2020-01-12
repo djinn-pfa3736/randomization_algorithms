@@ -1,11 +1,11 @@
 # Import packages
-import os
-import sqlite3
 import logging
-import sys
-import random
-
+import os
 import pdb
+import random
+import sqlite3
+import sys
+
 # Set directory
 # *  directory is set to as data manager
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +26,9 @@ class DataManager:
 
     def simple_randomization(self):
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY AUTOINCREMENT, recruted_date TEXT,hospital TEXT, patient_name TEXT, assign TEXT, exclusion INTEGER)")
+             "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
+    AUTOINCREMENT, recruted_date TEXT,hospital TEXT, patient_name TEXT,\
+     assign TEXT, exclusion INTEGER)")
 
         self.cursor.execute('SELECT * FROM patient ORDER BY id ASC')
         # pdb.set_trace()
@@ -45,7 +47,7 @@ class DataManager:
             print(row)
 
     def __del__(self):
-        conn = sqlite3.connect('../data/patient.db')
+        conn = sqlite3.connect("../data/patient.db")
         conn.close()
         logging.info(msg='Disconnecting database')
 
