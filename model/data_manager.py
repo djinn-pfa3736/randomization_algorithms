@@ -26,7 +26,7 @@ class DataManager:
 
     def simple_randomization(self):
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY AUTOINCREMENT, assign TEXT)")
+            "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY AUTOINCREMENT, recruted_date TEXT,hospital TEXT, patient_name TEXT, assign TEXT, exclusion INTEGER)")
 
         self.cursor.execute('SELECT * FROM patient ORDER BY id ASC')
         # pdb.set_trace()
@@ -45,7 +45,7 @@ class DataManager:
             print(row)
 
     def __del__(self):
-        conn = sqlite3.connect('../data/' + self.n_db + '.db')
+        conn = sqlite3.connect('../data/patient.db')
         conn.close()
         logging.info(msg='Disconnecting database')
 
@@ -63,15 +63,15 @@ if __name__ == "__main__":
     # pdb.set_trace()
 
     data_manager.cursor.execute(
-        "insert into patient(hospital, name) values('Nakagami', 'Gushiken')")
+        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Gushiken', '0')")
     data_manager.cursor.execute(
-        "insert into patient(hospital, name) values('Nakagami', 'Ueda')")
+        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Ueda', '0')")
     data_manager.cursor.execute(
-        "insert into patient(hospital, name) values('Nakagami', 'Tamaki')")
+        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Tamaki', '0')")
     data_manager.cursor.execute(
-        "insert into patient(hospital, name) values('Nakagami', 'Shiroma')")
+        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Shiroma', '0')")
     data_manager.cursor.execute(
-        "insert into patient(hospital, name) values('Nakagami', 'Afuso')")
+        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Afuso', '0')")
 
     data_manager.simple_randomization()
     data_manager.print_db()
