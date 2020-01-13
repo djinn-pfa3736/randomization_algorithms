@@ -6,6 +6,11 @@ import random
 import sqlite3
 import sys
 
+# Logging setting
+formatter = '%(levelname)s : %(asctime)s :%(message)s'
+logging.basicConfig(level=logging.INFO, format=formatter)
+
+
 # Set directory
 # *  directory is set to as data manager
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -25,10 +30,11 @@ class DataManager:
         self.conn.close()
 
     def simple_randomization(self):
-        self.cursor.execute(
-             "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
-    AUTOINCREMENT, recruted_date TEXT,hospital TEXT, patient_name TEXT,\
-     assign TEXT, exclusion INTEGER)")
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
+        AUTOINCREMENT, recruted_date TEXT,hospital TEXT, patient_name TEXT,\
+         assign TEXT, exclusion INTEGER)")
+        logging.info(msg='Create patient table' + 'from' + os.getcwd())
 
         self.cursor.execute('SELECT * FROM patient ORDER BY id ASC')
         # pdb.set_trace()
@@ -57,11 +63,6 @@ if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     data_manager = DataManager()
-
-    # Logging setting
-    formatter = '%(levelname)s : %(asctime)s :%(message)s'
-    logging.basicConfig(level=logging.INFO, format=formatter)
-
     # pdb.set_trace()
 
     data_manager.cursor.execute(
