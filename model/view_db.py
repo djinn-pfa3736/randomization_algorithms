@@ -1,6 +1,6 @@
+import logging
 import os
 import sqlite3
-import logging
 
 # Set directory
 # *  directory is set to as test
