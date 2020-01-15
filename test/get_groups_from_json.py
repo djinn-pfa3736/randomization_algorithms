@@ -3,19 +3,28 @@
 import json
 import os
 
-# *  directory is set
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+# os.chdir(os.path.dirname(os.path.abspath(__file__)))
+# # Load json file
+# study_group_file = open('study_data.json', 'r')
+# study_group_object = json.load(study_group_file)
+# print(study_group_object)
+# print(study_group_object["study_groups"])
+# print(study_group_object["study_groups"][0])
 
-# Load json file
-study_group_file = open('study_data.json', 'r')
-study_group_object = json.load(study_group_file)
-print(study_group_object)
-print(study_group_object["study_groups"][0])
 
+class GetStudyGroups(object):
 
-class GetStudyGroup(object):
-    def __int__(self):
+    def get_var_Groups_ver1(self):
+        global Groups
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
         study_group_file = open('study_data.json', 'r')
         study_group_object = json.load(study_group_file)
-        global Groups
-        Groups = study_group_object["study_groups"]
+        print(study_group_object)
+        Groups = study_group_object
+
+
+get_study_groups = GetStudyGroups()
+get_study_groups.get_var_Groups_ver1()
+print(Groups['study_groups'][0])
+print(Groups['study_groups'][1])
+print(type(Groups))
