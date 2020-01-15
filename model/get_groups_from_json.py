@@ -22,9 +22,9 @@ class GetStudyGroups(object):
         print(study_group_object)
         Groups = study_group_object
 
-
-get_study_groups = GetStudyGroups()
-get_study_groups.get_var_Groups_ver1()
-print(Groups['study_groups'][0])
-print(Groups['study_groups'][1])
-print(type(Groups))
+if __name__ = '__main__'
+    get_study_groups = GetStudyGroups()
+    get_study_groups.get_var_Groups_ver1()
+    print(Groups['study_groups'][0])
+    print(Groups['study_groups'][1])
+    print(type(Groups))
