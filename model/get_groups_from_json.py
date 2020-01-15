@@ -21,8 +21,9 @@ class GetStudyGroups(object):
         study_group_object = json.load(study_group_file)
         print(study_group_object)
         Groups = study_group_object
+        return Groups
 
-if __name__ = '__main__'
+if __name__ == '__main__':
     get_study_groups = GetStudyGroups()
     get_study_groups.get_var_Groups_ver1()
     print(Groups['study_groups'][0])
