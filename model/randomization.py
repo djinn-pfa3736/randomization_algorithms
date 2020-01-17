@@ -9,17 +9,17 @@ class Randomize (object):
 
     def simple_randomization_ver1(self):
         # * define AssinedGroup as global variable
-        get_study_groups = get_groups_from_json.GetStudyGroups()
-        Groups=get_study_groups.get_var_Groups_ver1()
+        self.get_study_groups = get_groups_from_json.GetStudyGroups()
+        self.Groups = self.get_study_groups.get_var_Groups_ver1()
         # * get random variable 0-1
         if random.random() > 0.5:
-            AssignedGroup = Groups['study_groups'][0]
-            print(AssignedGroup)
-            return(AssignedGroup)
+            self.AssignedGroup = self.Groups['study_groups'][0]
+            print(self.AssignedGroup)
+            return(self.AssignedGroup)
         else:
-            AssignedGroup = Groups['study_groups'][1]
-            print(AssignedGroup)
-            return(AssignedGroup)
+            self.AssignedGroup = self.Groups['study_groups'][1]
+            print(self.AssignedGroup)
+            return(self.AssignedGroup)
 
 
 if __name__ == '__main__':

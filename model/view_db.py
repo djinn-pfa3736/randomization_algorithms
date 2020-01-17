@@ -15,7 +15,7 @@ conn = sqlite3.connect('../data/patient.db')
 cursor = conn.cursor()
 logging.info(msg='Connecting database' + 'from' + os.getcwd())
 
-cursor.execute('SELECT * FROM patient ORDER BY id ASC')
+cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
 for row in cursor.fetchall():
     print(row)
 conn.commit()
