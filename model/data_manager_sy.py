@@ -16,13 +16,15 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # *  directory is set to as data manager
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+
 class DataManager(object):
     def __init__(self):
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         self.conn = sqlite3.connect("../data/patient.db")
         self.cursor = self.conn.cursor()
 
-        self.randomization = randomization.Randomize() 
+        self.randomization = randomization.Randomize()
+
     def connect(self):
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
@@ -34,10 +36,9 @@ class DataManager(object):
     def add_case(self):
         # Get assigned_group
         # import randomization
-        # self.assigned_group = self.randomization.simple_randomization_ver1()
-
-        self.cursor.execute(
-            "insert into assignment(recruted_date) values ('2019-1-12')")
+        self.assigned_group = self.randomization.simple_randomization_ver1()
+        self.cursor.execute("insert into assignment(recruted_date, assign) values ('2019-1-12',?)", [
+            self.assigned_group])
         self.conn.commit()
         logging.info(msg='Insert a case into patient.db')
 
@@ -45,7 +46,7 @@ class DataManager(object):
         logging.info(msg='Showing cases from the instance')
         # self.conn = sqlite3.connect("../data/patient.db")
         # self.cursor = self.conn.cursor()
-        
+
         self.cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
         for rows in self.cursor.fetchall():
             print(rows)
