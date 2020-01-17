@@ -5,6 +5,8 @@ import sqlite3
 import sys
 import randomization
 
+import pdb
+
 # Logging setting
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
 logging.basicConfig(level=logging.INFO, format=formatter)
@@ -14,17 +16,13 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # *  directory is set to as data manager
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-if __name__ == '__main__':
-    randomization = randomization.Randomize()
-    randomization.simple_randomization_ver1()
-
-
 class DataManager(object):
     def __init__(self):
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         self.conn = sqlite3.connect("../data/patient.db")
         self.cursor = self.conn.cursor()
 
+        self.randomization = randomization.Randomize() 
     def connect(self):
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
@@ -35,34 +33,41 @@ class DataManager(object):
 
     def add_case(self):
         # Get assigned_group
-        import randomization
-        self.randomization = randomization.Randomize()
-        self.assigned_group = self.randomization.simple_randomization_ver1()
+        # import randomization
+        # self.assigned_group = self.randomization.simple_randomization_ver1()
 
         self.cursor.execute(
             "insert into assignment(recruted_date) values ('2019-1-12')")
         self.conn.commit()
         logging.info(msg='Insert a case into patient.db')
-        
+
     def print_db(self):
         logging.info(msg='Showing cases from the instance')
-        self.conn = sqlite3.connect("../data/patient.db")
-        self.cursor = self.conn.cursor()
-        for self.rows in self.cursor.fetchall():
-            print(self.row)
+        # self.conn = sqlite3.connect("../data/patient.db")
+        # self.cursor = self.conn.cursor()
+        
+        self.cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
+        for rows in self.cursor.fetchall():
+            print(rows)
         logging.info(msg='Ending print_db')
 
     def __del__(self):
-        conn = sqlite3.connect("../data/patient.db")
-        conn.close()
+        # conn = sqlite3.connect("../data/patient.db")
+        self.conn.close()
         logging.info(msg='Disconnecting database')
 
 
 if __name__ == "__main__":
+
+    # randomization = randomization.Randomize()
+    # randomization.simple_randomization_ver1()
+
     data_manager = DataManager()
     data_manager.add_case()
     data_manager.print_db()
+
     # Connecting
+    """
     conn = sqlite3.connect('../data/patient.db')
     cursor = conn.cursor()
     logging.info(msg='Connecting database in the test')
@@ -73,7 +78,7 @@ if __name__ == "__main__":
         print(row)
     conn.commit()
     conn.close()
-
+    """
 
 
 #     os.chdir(os.path.dirname(os.path.abspath(__file__)))
