@@ -1,6 +1,6 @@
 
 
-# Packaage
+# Package
 
 import tkinter as tk
 import os
@@ -10,11 +10,14 @@ import pdb
 
 # Set Directory
 sys.path += [os.path.dirname('../')]
+sys.path += [os.path.dirname('.')]
+
 from model import data_manager
 
 dm = data_manager.DataManager()
 dm.print_db()
 
+# pdb.set_trace()
 
 # # Window文字
 # root = tk.Tk()
