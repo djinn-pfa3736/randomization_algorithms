@@ -1,16 +1,17 @@
 
 
-
 # Packaage
+
 import tkinter as tk
-import os, sys
+import os
+import sys
 # Set Directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-from ..model import data_manager
 
+
+from ..model.data_manager
 # dm = DataManager()
 # dm.print_db()
-
 
 
 # # Window文字
