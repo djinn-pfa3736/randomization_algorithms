@@ -3,7 +3,10 @@ import os
 import sqlite3
 
 # Set directory
+<<<<<<< HEAD
 # *  directory is set to as test
+=======
+>>>>>>> 0d3786c67456bda2ffebf56f52a96fbf6d58c0e9
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Logging setting

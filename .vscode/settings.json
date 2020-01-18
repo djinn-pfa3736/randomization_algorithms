@@ -6,5 +6,17 @@
     "python.testing.nosetestsEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.pythonPath": "/usr/local/bin/python3",
+<<<<<<< HEAD
     "editor.fontSize": 15
+=======
+    "editor.fontSize": 15,
+    "sqltools.connections": [
+        {
+            "database": "${workspaceFolder}/data/patient.db",
+            "dialect": "SQLite",
+            "name": "Patient"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+>>>>>>> 0d3786c67456bda2ffebf56f52a96fbf6d58c0e9
 }

@@ -2,10 +2,13 @@
 import json
 import random
 
-import get_groups_from_json
+# import get_groups_from_json
 
 
-class Randomize (object):
+class Randomize:
+
+    def __init__(self):
+        pass
 
     def simple_randomization_ver1(self):
         # * define AssinedGroup as global variable
