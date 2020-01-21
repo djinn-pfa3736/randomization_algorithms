@@ -3,6 +3,7 @@
 # https://qiita.com/nnahito/items/ad1428a30738b3d93762s
 
 
+
 import tkinter as tk
 import os
 import sys
@@ -19,46 +20,50 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # Set Directory
 sys.path += [os.path.dirname('../')]
 sys.path += [os.path.dirname('.')]
-from model import data_manager
 
+from model import data_manager
 dm = data_manager.DataManager()
 dm.print_db()
 
 # pdb.set_trace()
 # Time manager
+
+# Function
+## Definition functions
+def DeleteEntryValue():
+      # エントリーの中身を削除
+    EditBoxName.delete(0, tk.END)
+
+def AddCase():
+    # Get
+    Value_Name=EditBox_Name.get
+    logging.info(msg='Get Name values from edit box')
+
 tm = get_date.TimeManager()
 today = tm.GetDate()
+
 # Window
 root = tk.Tk()
 root.title(u"Simple randomization")
 root.geometry("600x300")
 
-# Label
-Static1 = tk.Label(text=u'Please enter the case')
-Static1.place(x=100, y=100)
-Static1.pack()
+# Frame
+# Main frame
+main_frm = tk.Frame(root)
+main_frm.grid(column=0, row=0, sticky=tk.NSEW, padx=5, pady=10)
+
+# Widgets
+LabelName=tk.Label(main_frm, text=u'Name')
+EditBoxName=tk.Entry(main_frm, width=10)
+ButtonSubmit=tk.Button(text=u'Submit',command=DeleteEntryValue )
+
+# Place
+LabelName.grid(column = 0, row = 0)
+EditBoxName.grid(column = 1, row = 0)
+ButtonSubmit.grid(column = 2, row = 0)
 
 
-# Entry Box
-EditBox_year = tk.Entry(width=10)
-EditBox_year.pack()
-
-# Definition functions
-
-
-def DeleteEntryValue(event):
-      # エントリーの中身を削除
-    EditBox_year.delete(0, tk.END)
-
-
-# Button
-Button_delete = tk.Button(text=u'データ削除')
-Button_delete.bind("<Button-1>", DeleteEntryValue)
-# 左クリック（<Button-1>）されると，DeleteEntryValue関数を呼び出すようにバインド
-Button_delete.pack()
-
-
-# Get
-Value_year = EditBox_year.get
-logging.info(msg='Get values from edit box')
+# # Actions
+# ButtonSubmit.bind("<Button-1>", DeleteEntryValue)
+# ButtonSubmit.pack()
 root.mainloop()
