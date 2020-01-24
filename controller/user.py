@@ -1,9 +1,6 @@
 # Package
 # References
 # https://qiita.com/nnahito/items/ad1428a30738b3d93762s
-
-
-
 import tkinter as tk
 import os
 import sys
@@ -13,6 +10,7 @@ import pdb
 import logging
 
 import get_date
+
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
 logging.basicConfig(level=logging.INFO, format=formatter)
@@ -30,14 +28,18 @@ dm.print_db()
 
 # Function
 ## Definition functions
-def DeleteEntryValue():
+def delete_entry_value():
       # エントリーの中身を削除
     EditBoxName.delete(0, tk.END)
+    
 
-def AddCase():
-    # Get
-    Value_Name=EditBox_Name.get
+
+def submit():
+    Value_Name=EditBoxName.get
     logging.info(msg='Get Name values from edit box')
+    dm.add_case()
+    logging.info(msg='Add case from submit button')
+    EditBoxName.delete(0, tk.END)
 
 tm = get_date.TimeManager()
 today = tm.GetDate()
@@ -55,7 +57,7 @@ main_frm.grid(column=0, row=0, sticky=tk.NSEW, padx=5, pady=10)
 # Widgets
 LabelName=tk.Label(main_frm, text=u'Name')
 EditBoxName=tk.Entry(main_frm, width=10)
-ButtonSubmit=tk.Button(text=u'Submit',command=DeleteEntryValue )
+ButtonSubmit=tk.Button(text=u'Submit',command=submit )
 
 # Place
 LabelName.grid(column = 0, row = 0)

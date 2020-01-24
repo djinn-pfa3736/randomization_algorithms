@@ -4,7 +4,7 @@ import os
 
 import sqlite3
 import sys
-from model import randomization
+
 
 import pdb
 
@@ -15,6 +15,7 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # Set directory
 # *  directory is set to as data manager
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+import randomization
 
 class DataManager(object):
     def __init__(self):
@@ -36,7 +37,7 @@ class DataManager(object):
         # Get assigned_group
         # import randomization
         self.assigned_group = self.randomization.simple_randomization_ver1()
-        self.cursor.execute("insert into assignment(recruted_date, assign) values ('2019-1-12',?)", [
+        self.cursor.execute("insert into assignment(recruted_date, assign) values ('2019-1-24',?)", [
             self.assigned_group])
         self.conn.commit()
         logging.info(msg='Insert a case into patient.db')
@@ -56,65 +57,7 @@ class DataManager(object):
         self.conn.close()
         logging.info(msg='Disconnecting database')
 
-
-if __name__ == "__main__":
-    # *  directory is set to as data manager
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-    data_manager = DataManager()
-    # pdb.set_trace()
-
-    data_manager.cursor.execute(
-        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Gushiken', '0')")
-    data_manager.cursor.execute(
-        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Ueda', '0')")
-    data_manager.cursor.execute(
-        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Tamaki', '0')")
-    data_manager.cursor.execute(
-        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Shiroma', '0')")
-    data_manager.cursor.execute(
-        "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Afuso', '0')")
-
-    data_manager.simple_randomization()
-    data_manager.print_db()
-
-    # randomization = randomization.Randomize()
-    # randomization.simple_randomization_ver1()
-
-    data_manager = DataManager()
-    data_manager.add_case()
-    data_manager.print_db()
-
-    # Connecting
-    """
-    conn = sqlite3.connect('../data/patient.db')
-    cursor = conn.cursor()
-    logging.info(msg='Connecting database in the test')
-
-    logging.info(msg='Showing the cases from the test')
-    cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
-    for row in cursor.fetchall():
-        print(row)
-    conn.commit()
-    conn.close()
-    """
-
-
-#     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-#     data_manager = DataManager()
-#     # pdb.set_trace()
-
-#     data_manager.cursor.execute(
-#         "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Gushiken', '0')")
-#     data_manager.cursor.execute(
-#         "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Ueda', '0')")
-#     data_manager.cursor.execute(
-#         "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Tamaki', '0')")
-#     data_manager.cursor.execute(
-#         "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Shiroma', '0')")
-#     data_manager.cursor.execute(
-#         "insert into patient(hospital, patient_name, exclusion) values('Nakagami', 'Afuso', '0')")
-
-#     data_manager.simple_randomization()
-#     data_manager.print_db()
+if __name__ == '__main__':
+    dm=DataManager()
+    dm.add_case()
+    dm.print_db()
