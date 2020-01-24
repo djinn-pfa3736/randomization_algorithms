@@ -1,6 +1,14 @@
-  {
-      "study_groups": [
-          "Control",
-          "Treat"
-      ]
-  }
+{
+    "study_groups": [
+        "Control",
+        "Treat"
+    ]
+}
+
+{
+    "hospital_name": [
+        "Nakagami",
+        "Tomishiro"
+        "Ohama"
+    ]
+}

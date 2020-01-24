@@ -9,7 +9,7 @@ import datetime
 import pdb
 import logging
 
-import get_date
+
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -20,6 +20,8 @@ sys.path += [os.path.dirname('../')]
 sys.path += [os.path.dirname('.')]
 
 from model import data_manager
+from model import get_date
+
 dm = data_manager.DataManager()
 dm.print_db()
 

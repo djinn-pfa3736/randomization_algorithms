@@ -16,6 +16,7 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # *  directory is set to as data manager
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 import randomization
+import get_date
 
 class DataManager(object):
     def __init__(self):
@@ -35,11 +36,18 @@ class DataManager(object):
 
     def add_case(self):
         # Get assigned_group
-        # import randomization
         self.assigned_group = self.randomization.simple_randomization_ver1()
-        self.cursor.execute("insert into assignment(recruted_date, assign) values ('2019-1-24',?)", [
-            self.assigned_group])
+        self.tm=get_date.TimeManager()
+        
+        # Get today
+        self.today=self.tm.GetDate()
+        logging.info(msg='self.today is '+self.today)
+
+        self.cursor.execute("insert into assignment(recruted_date, assign) values (?,?)",[self.today,
+        self.assigned_group])
+        
         self.conn.commit()
+        
         logging.info(msg='Insert a case into patient.db')
 
     def print_db(self):
