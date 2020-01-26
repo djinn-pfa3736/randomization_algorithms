@@ -39,7 +39,7 @@ def delete_entry_value():
 def submit():
     Value_Name=EditBoxName.get
     logging.info(msg='Get Name values from edit box')
-    dm.add_case()
+    dm.add_case2()
     logging.info(msg='Add case from submit button')
     EditBoxName.delete(0, tk.END)
 

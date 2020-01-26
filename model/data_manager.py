@@ -1,4 +1,6 @@
 # Import packages
+import get_date
+import randomization
 import logging
 import os
 
@@ -15,8 +17,6 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # Set directory
 # *  directory is set to as data manager
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-import randomization
-import get_date
 
 class DataManager(object):
     def __init__(self):
@@ -37,17 +37,35 @@ class DataManager(object):
     def add_case(self):
         # Get assigned_group
         self.assigned_group = self.randomization.simple_randomization_ver1()
+        self.tm = get_date.TimeManager()
+
+        # Get today
+        self.today = self.tm.GetDate()
+        logging.info(msg='self.today is '+self.today)
+
+        self.cursor.execute("insert into assignment(recruted_date, assign) values (?,?)", [self.today,
+                                                                                           self.assigned_group])
+
+        self.conn.commit()
+
+        logging.info(msg='Insert a case into patient.db')
+
+    def add_case2(self,HospitalName='Hospital', HospitalID='11111', PatientName = 'No Name'):
+        # Get assigned_group
+        self.assigned_group = self.randomization.simple_randomization_ver1()
         self.tm=get_date.TimeManager()
-        
+        self.HospitalName= HospitalName
+        self.PatientName = PatientName
+        self.HospitalID = HospitalID
         # Get today
         self.today=self.tm.GetDate()
         logging.info(msg='self.today is '+self.today)
 
-        self.cursor.execute("insert into assignment(recruted_date, assign) values (?,?)",[self.today,
-        self.assigned_group])
-        
+        self.cursor.execute("insert into assignment(exclusion, recruted_date, hospital,hospital_id , assign, patient_name) \
+        values (?,?,?,?,?,?)",[0, self.today, self.HospitalName, self.HospitalID, self.assigned_group, self.PatientName])
+
         self.conn.commit()
-        
+
         logging.info(msg='Insert a case into patient.db')
 
     def print_db(self):
@@ -65,7 +83,8 @@ class DataManager(object):
         self.conn.close()
         logging.info(msg='Disconnecting database')
 
+
 if __name__ == '__main__':
-    dm=DataManager()
-    dm.add_case()
+    dm = DataManager()
+    dm.add_case2(PatientName='EnteredFromInstancePatientName',HospitalName='EndeterdFromInsstanceHospital')
     dm.print_db()
