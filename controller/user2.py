@@ -6,6 +6,7 @@ import sys
 import os
 from tkinter import messagebox
 import tkinter.simpledialog as simpledialog
+import tkinter.ttk as ttk
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -18,12 +19,17 @@ from model import data_manager
 from model import get_date
 
 dm = data_manager.DataManager()
+Database = dm.get_db_for_tree()
 
+if __name__ =='__main__':
+    Database = dm.get_db_for_tree()
+    print(type(Database))
+    
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         master.title("Simple randomization")
-        master.geometry("350x500")
+        master.geometry("500x500")
         self.pack()
         self.create_widgets()
 
@@ -50,31 +56,47 @@ class Application(tk.Frame):
         self.lb.grid(row=0, column=0, padx=2, pady=2)
 
         # Bt
+        ## add case
         self.bt_add = tk.Button(self.fm_1)
-        self.bt_add["text"] = "Add case"
+        self.bt_add["text"] = "New case"
         self.bt_add.grid(row=1, column=0, padx=2, pady=2)
-        self.bt_add["command"] = self.AddCase()
-    
-    # Def
-    def AddCase(self, action):
-        dm.add_case(action)
-        self.res = messagebox.showinfo("Info","New case is now add and assined, successfully.")
-        print("showinfo",self.res)
-        # self.message_add = tk.Message(self.fm_2)
-        # self.message_add["text"]="New case is now add and assined, successfully."
-        # self.message_add.pack()
-        print("New case is now add and assined, successfully.")
-        logging.info (msg='Show data base from GUI')
+        self.bt_add["command"] = self.AddCase
+        
+        #Tree view
+        self.tree = ttk.Treeview(self.fm_2)
+        self.tree["column"] =(1,2,3,4,5)
+        self.tree["show"] = "headings"
+        
+        self.tree.column(1,width=50)
+        self.tree.column(2,width=75)
+        self.tree.column(3,width=75)
+        self.tree.column(4,width=75)
+        self.tree.column(5,width=75)
 
-    #     self.en = tk.Entry(self)
-    #     self.en.focus_set()
-    #     self.bt=tk.Button(self)
-    #     self.bt["text"]="ボタン"
-    #     self.bt["command"]=self.print_txtval
-    #     self.bt.pack(side="bottom")
-    # def print_txtval(self):
-    #     val_en=self.en.get()
-    #     print(val_en)
+        self.tree.heading(1,text="Study ID")
+        self.tree.heading(2,text="Date")
+        self.tree.heading(3,text="Institution")
+        self.tree.heading(4,text="ID")
+        self.tree.heading(5,text="Assigned")
+     
+        self.tree.grid(row=0, column=0, padx=2, pady=2)
+        self.Database = dm.get_db_for_tree()
+        #sself.tree.insert ("",index= "end", values = self.Database)
+    # Def
+    def AddCase(self):
+
+        self.res_add1 = messagebox.askquestion("Confirmation","Do you want to enroll a new case?\
+                                               This operation cannot be undone.", icon ='warning')
+        print(self.res_add1)
+        if self.res_add1 == 'yes':
+            dm.add_case()
+            dm.print_db()
+            self.res_add2 = messagebox.showinfo("Info","New case is now added and assined, successfully.")
+            print("showinfo",self.res_add2)
+        else:
+            return
+        
+        logging.info (msg='Add data base from GUI')
 
 
 root = tk.Tk()
