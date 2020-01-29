@@ -64,7 +64,7 @@ class Application(tk.Frame):
         
         #Tree view
         self.tree = ttk.Treeview(self.fm_2)
-        self.tree["column"] =(1,2,3,4,5)
+        self.tree["column"] =(1,2,3,4,5,6)
         self.tree["show"] = "headings"
         
         self.tree.column(1,width=50)
@@ -72,16 +72,25 @@ class Application(tk.Frame):
         self.tree.column(3,width=75)
         self.tree.column(4,width=75)
         self.tree.column(5,width=75)
+        self.tree.column(6,width=75)
 
         self.tree.heading(1,text="Study ID")
         self.tree.heading(2,text="Date")
         self.tree.heading(3,text="Institution")
         self.tree.heading(4,text="ID")
-        self.tree.heading(5,text="Assigned")
+        self.tree.heading(5,text="Name")
+        self.tree.heading(6,text="Assigned")
      
         self.tree.grid(row=0, column=0, padx=2, pady=2)
-        self.Database = dm.get_db_for_tree()
-        #sself.tree.insert ("",index= "end", values = self.Database)
+        
+        self.List=dm.get_db_for_tree()
+        
+        for self.row_data in self.List:
+            logging.info(msg="Print in iterator")
+            print(self.row_data)
+            self.tree.insert("","end", values=row_data)
+            logging.info(msg="Print in iterator end")
+
     # Def
     def AddCase(self):
 

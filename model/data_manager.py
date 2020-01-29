@@ -81,14 +81,12 @@ class DataManager(object):
     def get_db_for_tree(self):
         self.cursor.execute('SELECT id, recruted_date, hospital, hospital_id,\
         patient_name, assign FROM assignment WHERE exclusion == 0 ORDER BY id ASC')
+        #for self.rows in enumerate(self.cursor.fetchall()):
         for self.rows in self.cursor.fetchall():
             print(self.rows)
             self.result=[]
-            self.result=self.result.append(self.rows)
+        return(self.result)
             
-        logging.info(msg='Filter exclusion is zero')
-        print(type(self.result))
-        return self.result
         
     def __del__(self):
         # conn = sqlite3.connect("../data/patient.db")
@@ -97,6 +95,9 @@ class DataManager(object):
 
 
 if __name__ == '__main__':
+    logging.info(msg="Test iterator")
     dm = DataManager()
-    dm.print_db()
-    dm.get_db_for_tree()
+    List=dm.get_db_for_tree()
+    #print(type(dm.get_db_for_tree()))
+    for row_data in List:
+        print(row_data)
