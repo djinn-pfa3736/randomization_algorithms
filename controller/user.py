@@ -9,7 +9,9 @@ import datetime
 import pdb
 import logging
 
-
+# Set directory
+# *  directory is set to as data manager
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'

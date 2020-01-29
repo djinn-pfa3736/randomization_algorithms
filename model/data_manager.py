@@ -1,9 +1,9 @@
 # Import packages
-import get_date
+
 import randomization
 import logging
 import os
-
+import get_date
 import sqlite3
 import sys
 
@@ -86,5 +86,5 @@ class DataManager(object):
 
 if __name__ == '__main__':
     dm = DataManager()
-    dm.add_case2(PatientName='EnteredFromInstancePatientName',HospitalName='EndeterdFromInsstanceHospital')
+    #dm.add_case2(PatientName='EnteredFromInstancePatientName',HospitalName='EndeterdFromInsstanceHospital')
     dm.print_db()
