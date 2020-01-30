@@ -121,9 +121,10 @@ class Application(tk.Frame):
 
     def Export(self): 
         logging.info(msg='Launch Export from GUI')
-        self.dirpath = filedialog.askdirectory()
+        #self.dirpath = filedialog.askdirectory()
+        fTyp=[('Export','*.csv')]
+        self.dirpath=filedialog.asksaveasfilename(filetypes=fTyp)
         dm.get_db_for_csv(dirpath_csv=self.dirpath)
-        logging.info(self.dirpath)
         logging.info(msg='Export output.csv from GUI')
 
 root = tk.Tk()

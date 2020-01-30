@@ -87,10 +87,10 @@ class DataManager(object):
             self.result=[]
         return(self.result)
     
-    def get_db_for_csv(self, dirpath_csv= os.path.dirname(os.path.abspath(__file__))):
+    def get_db_for_csv(self, dirpath_csv):
         self.cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
-        self.path = dirpath_csv+'/output.csv'
-        logging.info(msg= 'Get path is' + self.path)
+        self.path = dirpath_csv
+       
         with open(self.path,'w') as self.csv_file:
             self.csv_export = csv.writer(self.csv_file)
             # write header                        
