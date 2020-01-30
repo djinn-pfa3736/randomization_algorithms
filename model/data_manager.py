@@ -86,6 +86,20 @@ class DataManager(object):
             print(self.rows)
             self.result=[]
         return(self.result)
+    
+    def get_db_for_csv(self):
+        self.fieldsnames=['StudyID','Date','Institution','ID','Name','Assigned']
+        self.cursor.execute('SELECT id, recruted_date, hospital, hospital_id,\
+        patient_name, assign FROM assignment WHERE exclusion == 0 ORDER BY id ASC')
+        
+        for self.rows in self.cursor.fetchall():
+            self.Dict = dict(zip(self.fieldsnames,self.rows))
+            print(self.Dict)
+            self.result=[]
+        return(self.Dict)
+        
+    def export_csv(self):
+        
             
         
     def __del__(self):
@@ -97,7 +111,4 @@ class DataManager(object):
 if __name__ == '__main__':
     logging.info(msg="Test iterator")
     dm = DataManager()
-    List=dm.get_db_for_tree()
-    #print(type(dm.get_db_for_tree()))
-    for row_data in List:
-        print(row_data)
+    List = dm.get_db_for_csv()

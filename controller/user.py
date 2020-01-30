@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-
-
-import tkinter as tk
+import csv
+import itertools
 import logging
-import sys
 import os
-from tkinter import messagebox
+import sys
+import tkinter as tk
 import tkinter.simpledialog as simpledialog
 import tkinter.ttk as ttk
-import csv
+from tkinter import messagebox
+
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -16,12 +16,10 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 
 # Set Directory
 sys.path += [os.path.dirname('../')]
-logging.info(msg= sys.path)
+logging.info(msg=sys.path)
 sys.path += [os.path.dirname('.')]
-logging.info(msg= sys.path)
-from model import get_date
-from model import data_manager
-
+logging.info(msg=sys.path)
+from model import data_manager, get_date
 
 dm = data_manager.DataManager()
 Database = dm.get_db_for_tree()
@@ -97,9 +95,9 @@ class Application(tk.Frame):
 
         self.List = dm.get_db_for_tree()
 
-        for self.row_data in self.List:
+        for row_data in enumerate(self.List):
             logging.info(msg="Print in iterator")
-            print(self.row_data)
+            print(srow_data)
             self.tree.insert("", "end", values=row_data)
             logging.info(msg="Print in iterator end")
 
@@ -121,13 +119,27 @@ class Application(tk.Frame):
         logging.info(msg='Add data base from GUI')
 
     def Export(self):
-        with open('test.csv','w') as csv_file:
-            fieldnames = ['StudyID','Date','Institution','ID','Name','Assigned']
-            writer= csv.DictWriter(csv_file, fieldnames=fieldnames)
+        logging.info(msg='Launch Export from GUI')
+        self.fieldnames = ['StudyID', 'Date',
+                           'Institution', 'ID', 'Name', 'Assigned']
+        self.ListForTest = ['1', '2019-1-20', 'Nakagami',
+                            '11', 'Kinjyo', 'Control']  # dm.get_db_for_tree()
+        self.DicForCsvTest = dict(zip(self.fieldnames, self.ListForTest))
+        print(self.DicForCsvTest)
+        print(type(self.DicForCsvTest))
+
+        self.ListForCsv = dm.get_db_for_csv()
+        # print(type(self.ListForCsv))
+
+        with open('test.csv', 'w') as csv_file:
+            fieldnames = ['StudyID', 'Date',
+                          'Institution', 'ID', 'Name', 'Assigned']
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerow({'StudyID': '1', 'Date': '2020-1-30', 'Institution': 'Nakagami',
-                             'ID': '1111', 'Name': 'Kinjyo', 'Assigned': 'Control'})
-        logging.info(msg='Export from GUI') 
+            # writer.writerow({'StudyID': '1', 'Date': '2020-1-30', 'Institution': 'Nakagami',
+            #                 'ID': '1111', 'Name': 'Kinjyo', 'Assigned': 'Control'})
+            writer.writerow(self.ListForCsv)
+        logging.info(msg='Export from GUI')
 
 
 root = tk.Tk()
