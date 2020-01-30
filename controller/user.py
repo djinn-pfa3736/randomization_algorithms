@@ -1,17 +1,12 @@
-# Package
-# References
-# https://qiita.com/nnahito/items/ad1428a30738b3d93762s
+# -*- coding: utf-8 -*-
+
 import tkinter as tk
-import os
-import sys
-import datetime
-
-import pdb
 import logging
-
-# Set directory
-# *  directory is set to as data manager
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+import sys
+import os
+from tkinter import messagebox
+import tkinter.simpledialog as simpledialog
+import tkinter.ttk as ttk
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -20,56 +15,99 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # Set Directory
 sys.path += [os.path.dirname('../')]
 sys.path += [os.path.dirname('.')]
-
 from model import data_manager
 from model import get_date
 
 dm = data_manager.DataManager()
-dm.print_db()
+Database = dm.get_db_for_tree()
 
-# pdb.set_trace()
-# Time manager
-
-# Function
-## Definition functions
-def delete_entry_value():
-      # エントリーの中身を削除
-    EditBoxName.delete(0, tk.END)
+if __name__ =='__main__':
+    Database = dm.get_db_for_tree()
+    print(type(Database))
     
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        master.title("Simple randomization")
+        master.geometry("500x500")
+        self.pack()
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Pane
+        self.pw_main = tk.PanedWindow(self.master, orient='vertical')
+        self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
+
+        self.pw_1 = tk.PanedWindow(self.pw_main, bg="grey", orient='vertical')
+        self.pw_main.add(self.pw_1)
+        self.pw_2 = tk.PanedWindow(
+            self.pw_main, bg="yellow", orient='vertical')
+        self.pw_main.add(self.pw_2)
+        # Frame
+        self.fm_1 = tk.Frame(self.pw_1, bd=2, relief="ridge")
+        self.pw_1.add(self.fm_1)
+        self.fm_2 = tk.Frame(self.pw_2, bd=2, relief="ridge")
+        self.pw_2.add(self.fm_2)
+        # Frame top (pw_1)
+        # Label "menu"
+        self.lb = tk.Label(self.fm_1)
+        self.lb["text"] = "Case manager"
+        self.lb.pack(side="left")
+        self.lb.grid(row=0, column=0, padx=2, pady=2)
+
+        # Bt
+        ## add case
+        self.bt_add = tk.Button(self.fm_1)
+        self.bt_add["text"] = "New case"
+        self.bt_add.grid(row=1, column=0, padx=2, pady=2)
+        self.bt_add["command"] = self.AddCase
+        
+        #Tree view
+        self.tree = ttk.Treeview(self.fm_2)
+        self.tree["column"] =(1,2,3,4,5,6)
+        self.tree["show"] = "headings"
+        
+        self.tree.column(1,width=50)
+        self.tree.column(2,width=75)
+        self.tree.column(3,width=75)
+        self.tree.column(4,width=75)
+        self.tree.column(5,width=75)
+        self.tree.column(6,width=75)
+
+        self.tree.heading(1,text="Study ID")
+        self.tree.heading(2,text="Date")
+        self.tree.heading(3,text="Institution")
+        self.tree.heading(4,text="ID")
+        self.tree.heading(5,text="Name")
+        self.tree.heading(6,text="Assigned")
+     
+        self.tree.grid(row=0, column=0, padx=2, pady=2)
+        
+        self.List=dm.get_db_for_tree()
+        
+        for self.row_data in self.List:
+            logging.info(msg="Print in iterator")
+            print(self.row_data)
+            self.tree.insert("","end", values=row_data)
+            logging.info(msg="Print in iterator end")
+
+    # Def
+    def AddCase(self):
+
+        self.res_add1 = messagebox.askquestion("Confirmation","Do you want to enroll a new case?\
+                                               This operation cannot be undone.", icon ='warning')
+        print(self.res_add1)
+        if self.res_add1 == 'yes':
+            dm.add_case()
+            dm.print_db()
+            self.res_add2 = messagebox.showinfo("Info","New case is now added and assined, successfully.")
+            print("showinfo",self.res_add2)
+        else:
+            return
+        
+        logging.info (msg='Add data base from GUI')
 
 
-def submit():
-    Value_Name=EditBoxName.get
-    logging.info(msg='Get Name values from edit box')
-    dm.add_case2()
-    logging.info(msg='Add case from submit button')
-    EditBoxName.delete(0, tk.END)
-
-tm = get_date.TimeManager()
-today = tm.GetDate()
-
-# Window
 root = tk.Tk()
-root.title(u"Simple randomization")
-root.geometry("600x300")
-
-# Frame
-# Main frame
-main_frm = tk.Frame(root)
-main_frm.grid(column=0, row=0, sticky=tk.NSEW, padx=5, pady=10)
-
-# Widgets
-LabelName=tk.Label(main_frm, text=u'Name')
-EditBoxName=tk.Entry(main_frm, width=10)
-ButtonSubmit=tk.Button(text=u'Submit',command=submit )
-
-# Place
-LabelName.grid(column = 0, row = 0)
-EditBoxName.grid(column = 1, row = 0)
-ButtonSubmit.grid(column = 2, row = 0)
-
-
-# # Actions
-# ButtonSubmit.bind("<Button-1>", DeleteEntryValue)
-# ButtonSubmit.pack()
-root.mainloop()
+app = Application(master=root)
+app.mainloop()
