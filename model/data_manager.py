@@ -6,7 +6,7 @@ import os
 import get_date
 import sqlite3
 import sys
-
+import csv
 
 import pdb
 
@@ -86,6 +86,19 @@ class DataManager(object):
             print(self.rows)
             self.result=[]
         return(self.result)
+    
+    def get_db_for_csv(self, dirpath_csv= os.path.dirname(os.path.abspath(__file__))):
+        self.cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
+        self.path = dirpath_csv+'/output.csv'
+        logging.info(msg= 'Get path is' + self.path)
+        with open(self.path,'w') as self.csv_file:
+            self.csv_export = csv.writer(self.csv_file)
+            # write header                        
+            self.csv_export.writerow([d[0] for d in self.cursor.description])
+            # write data                          
+            for result in self.cursor:
+                self.csv_export.writerow(result)
+        
             
         
     def __del__(self):
@@ -97,7 +110,4 @@ class DataManager(object):
 if __name__ == '__main__':
     logging.info(msg="Test iterator")
     dm = DataManager()
-    List=dm.get_db_for_tree()
-    #print(type(dm.get_db_for_tree()))
-    for row_data in List:
-        print(row_data)
+    dm.get_db_for_csv()
