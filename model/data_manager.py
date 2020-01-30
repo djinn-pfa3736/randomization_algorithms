@@ -6,7 +6,7 @@ import os
 import get_date
 import sqlite3
 import sys
-
+import csv
 
 import pdb
 
@@ -88,17 +88,26 @@ class DataManager(object):
         return(self.result)
     
     def get_db_for_csv(self):
-        self.fieldsnames=['StudyID','Date','Institution','ID','Name','Assigned']
-        self.cursor.execute('SELECT id, recruted_date, hospital, hospital_id,\
-        patient_name, assign FROM assignment WHERE exclusion == 0 ORDER BY id ASC')
+        # self.fieldsnames=['StudyID','Date','Institution','ID','Name','Assigned']
+        # self.cursor.execute('SELECT id, recruted_date, hospital, hospital_id,\
+        # patient_name, assign FROM assignment WHERE exclusion == 0 ORDER BY id ASC')
         
-        for self.rows in self.cursor.fetchall():
-            self.Dict = dict(zip(self.fieldsnames,self.rows))
-            print(self.Dict)
-            self.result=[]
-        return(self.Dict)
+        # for self.rows in self.cursor.fetchall():
+        #     self.Dict = dict(zip(self.fieldsnames,self.rows))
+        #     print(self.Dict)
+        #     self.result=[]
+        # return(self.Dict)
         
-    def export_csv(self):
+        
+    
+        self.cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
+        with open('output.csv','w') as self.csv_file:
+            self.csv_export = csv.writer(self.csv_file)
+            # write header                        
+            self.csv_export.writerow([d[0] for d in self.cursor.description])
+            # write data                          
+            for result in self.cursor:
+                self.csv_export.writerow(result)
         
             
         
