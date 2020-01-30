@@ -6,6 +6,7 @@ import os
 import sys
 import tkinter as tk
 import tkinter.simpledialog as simpledialog
+from tkinter import filedialog
 import tkinter.ttk as ttk
 from tkinter import messagebox
 
@@ -119,8 +120,15 @@ class Application(tk.Frame):
         logging.info(msg='Add data base from GUI')
 
     def Export(self):
+        
         logging.info(msg='Launch Export from GUI')
-        dm.get_db_for_csv()
+        # self.fTyp = [("","*")]
+        # self.iDir = os.path.abspath(os.path.dirname(__file__))
+        # self.filepath = filedialog.askopenfilename(filetypes = self.fTyp,initialdir = self.iDir)
+        # self.file1.set(filepath)
+        self.dirpath = filedialog.askdirectory()
+        dm.get_db_for_csv(dirpath_csv=self.dirpath)
+        logging.info(self.dirpath)
         logging.info(msg='Export output.csv from GUI')
 
 root = tk.Tk()
