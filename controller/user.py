@@ -120,27 +120,8 @@ class Application(tk.Frame):
 
     def Export(self):
         logging.info(msg='Launch Export from GUI')
-        self.fieldnames = ['StudyID', 'Date',
-                           'Institution', 'ID', 'Name', 'Assigned']
-        self.ListForTest = ['1', '2019-1-20', 'Nakagami',
-                            '11', 'Kinjyo', 'Control']  # dm.get_db_for_tree()
-        self.DicForCsvTest = dict(zip(self.fieldnames, self.ListForTest))
-        print(self.DicForCsvTest)
-        print(type(self.DicForCsvTest))
-
-        self.ListForCsv = dm.get_db_for_csv()
-        # print(type(self.ListForCsv))
-
-        with open('test.csv', 'w') as csv_file:
-            fieldnames = ['StudyID', 'Date',
-                          'Institution', 'ID', 'Name', 'Assigned']
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-            writer.writeheader()
-            # writer.writerow({'StudyID': '1', 'Date': '2020-1-30', 'Institution': 'Nakagami',
-            #                 'ID': '1111', 'Name': 'Kinjyo', 'Assigned': 'Control'})
-            writer.writerow(self.ListForCsv)
-        logging.info(msg='Export from GUI')
-
+        dm.get_db_for_csv()
+        logging.info(msg='Export output.csv from GUI')
 
 root = tk.Tk()
 app = Application(master=root)
