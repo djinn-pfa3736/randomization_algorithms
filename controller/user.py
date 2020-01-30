@@ -119,13 +119,8 @@ class Application(tk.Frame):
 
         logging.info(msg='Add data base from GUI')
 
-    def Export(self):
-        
+    def Export(self): 
         logging.info(msg='Launch Export from GUI')
-        # self.fTyp = [("","*")]
-        # self.iDir = os.path.abspath(os.path.dirname(__file__))
-        # self.filepath = filedialog.askopenfilename(filetypes = self.fTyp,initialdir = self.iDir)
-        # self.file1.set(filepath)
         self.dirpath = filedialog.askdirectory()
         dm.get_db_for_csv(dirpath_csv=self.dirpath)
         logging.info(self.dirpath)

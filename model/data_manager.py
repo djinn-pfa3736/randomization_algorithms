@@ -99,7 +99,6 @@ class DataManager(object):
             for result in self.cursor:
                 self.csv_export.writerow(result)
         
-            
         
     def __del__(self):
         # conn = sqlite3.connect("../data/patient.db")
