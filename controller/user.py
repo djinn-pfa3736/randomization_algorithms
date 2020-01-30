@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 import tkinter as tk
 import logging
 import sys
@@ -7,6 +8,7 @@ import os
 from tkinter import messagebox
 import tkinter.simpledialog as simpledialog
 import tkinter.ttk as ttk
+import csv
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -14,17 +16,21 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 
 # Set Directory
 sys.path += [os.path.dirname('../')]
+logging.info(msg= sys.path)
 sys.path += [os.path.dirname('.')]
-from model import data_manager
+logging.info(msg= sys.path)
 from model import get_date
+from model import data_manager
+
 
 dm = data_manager.DataManager()
 Database = dm.get_db_for_tree()
 
-if __name__ =='__main__':
+if __name__ == '__main__':
     Database = dm.get_db_for_tree()
     print(type(Database))
-    
+
+
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -56,56 +62,72 @@ class Application(tk.Frame):
         self.lb.grid(row=0, column=0, padx=2, pady=2)
 
         # Bt
-        ## add case
+        # add case
         self.bt_add = tk.Button(self.fm_1)
         self.bt_add["text"] = "New case"
         self.bt_add.grid(row=1, column=0, padx=2, pady=2)
         self.bt_add["command"] = self.AddCase
-        
-        #Tree view
-        self.tree = ttk.Treeview(self.fm_2)
-        self.tree["column"] =(1,2,3,4,5,6)
-        self.tree["show"] = "headings"
-        
-        self.tree.column(1,width=50)
-        self.tree.column(2,width=75)
-        self.tree.column(3,width=75)
-        self.tree.column(4,width=75)
-        self.tree.column(5,width=75)
-        self.tree.column(6,width=75)
 
-        self.tree.heading(1,text="Study ID")
-        self.tree.heading(2,text="Date")
-        self.tree.heading(3,text="Institution")
-        self.tree.heading(4,text="ID")
-        self.tree.heading(5,text="Name")
-        self.tree.heading(6,text="Assigned")
-     
+        # export
+        self.bt_export = tk.Button(self.fm_1)
+        self.bt_export["text"] = "Export"
+        self.bt_export.grid(row=1, column=1, padx=2, pady=2)
+        self.bt_export["command"] = self.Export
+
+        # Tree view
+        self.tree = ttk.Treeview(self.fm_2)
+        self.tree["column"] = (1, 2, 3, 4, 5, 6)
+        self.tree["show"] = "headings"
+
+        self.tree.column(1, width=50)
+        self.tree.column(2, width=75)
+        self.tree.column(3, width=75)
+        self.tree.column(4, width=75)
+        self.tree.column(5, width=75)
+        self.tree.column(6, width=75)
+
+        self.tree.heading(1, text="Study ID")
+        self.tree.heading(2, text="Date")
+        self.tree.heading(3, text="Institution")
+        self.tree.heading(4, text="ID")
+        self.tree.heading(5, text="Name")
+        self.tree.heading(6, text="Assigned")
+
         self.tree.grid(row=0, column=0, padx=2, pady=2)
-        
-        self.List=dm.get_db_for_tree()
-        
+
+        self.List = dm.get_db_for_tree()
+
         for self.row_data in self.List:
             logging.info(msg="Print in iterator")
             print(self.row_data)
-            self.tree.insert("","end", values=row_data)
+            self.tree.insert("", "end", values=row_data)
             logging.info(msg="Print in iterator end")
 
     # Def
     def AddCase(self):
 
-        self.res_add1 = messagebox.askquestion("Confirmation","Do you want to enroll a new case?\
-                                               This operation cannot be undone.", icon ='warning')
+        self.res_add1 = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
+                                               This operation cannot be undone.", icon='warning')
         print(self.res_add1)
         if self.res_add1 == 'yes':
             dm.add_case()
             dm.print_db()
-            self.res_add2 = messagebox.showinfo("Info","New case is now added and assined, successfully.")
-            print("showinfo",self.res_add2)
+            self.res_add2 = messagebox.showinfo(
+                "Info", "New case is now added and assined, successfully.")
+            print("showinfo", self.res_add2)
         else:
             return
-        
-        logging.info (msg='Add data base from GUI')
+
+        logging.info(msg='Add data base from GUI')
+
+    def Export(self):
+        with open('test.csv','w') as csv_file:
+            fieldnames = ['StudyID','Date','Institution','ID','Name','Assigned']
+            writer= csv.DictWriter(csv_file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerow({'StudyID': '1', 'Date': '2020-1-30', 'Institution': 'Nakagami',
+                             'ID': '1111', 'Name': 'Kinjyo', 'Assigned': 'Control'})
+        logging.info(msg='Export from GUI') 
 
 
 root = tk.Tk()
