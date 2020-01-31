@@ -9,6 +9,7 @@ import tkinter.simpledialog as simpledialog
 from tkinter import filedialog
 import tkinter.ttk as ttk
 from tkinter import messagebox
+import sqlite3
 
 
 # Logging handlar
@@ -16,6 +17,7 @@ formatter = '%(levelname)s : %(asctime)s :%(message)s'
 logging.basicConfig(level=logging.INFO, format=formatter)
 
 # Set Directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 sys.path += [os.path.dirname('../')]
 logging.info(msg=sys.path)
 sys.path += [os.path.dirname('.')]
@@ -23,12 +25,6 @@ logging.info(msg=sys.path)
 from model import data_manager, get_date
 
 dm = data_manager.DataManager()
-Database = dm.get_db_for_tree()
-
-if __name__ == '__main__':
-    Database = dm.get_db_for_tree()
-    print(type(Database))
-
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -46,7 +42,7 @@ class Application(tk.Frame):
         self.pw_1 = tk.PanedWindow(self.pw_main, bg="grey", orient='vertical')
         self.pw_main.add(self.pw_1)
         self.pw_2 = tk.PanedWindow(
-            self.pw_main, bg="yellow", orient='vertical')
+            self.pw_main, bg="grey", orient='vertical')
         self.pw_main.add(self.pw_2)
         # Frame
         self.fm_1 = tk.Frame(self.pw_1, bd=2, relief="ridge")
@@ -64,13 +60,13 @@ class Application(tk.Frame):
         # add case
         self.bt_add = tk.Button(self.fm_1)
         self.bt_add["text"] = "New case"
-        self.bt_add.grid(row=1, column=0, padx=2, pady=2)
+        self.bt_add.grid(row=1, column=0, padx=2, pady=2, sticky=tk.W+tk.E)
         self.bt_add["command"] = self.AddCase
 
         # export
         self.bt_export = tk.Button(self.fm_1)
         self.bt_export["text"] = "Export"
-        self.bt_export.grid(row=2, column=0, padx=2, pady=2)
+        self.bt_export.grid(row=2, column=0, padx=2, pady=2, sticky=tk.W+tk.E)
         self.bt_export["command"] = self.Export
 
         # Tree view
@@ -92,15 +88,15 @@ class Application(tk.Frame):
         self.tree.heading(5, text="Name")
         self.tree.heading(6, text="Assigned")
 
-        self.tree.grid(row=0, column=0, padx=2, pady=2)
+        self.tree.pack(fill=tk.BOTH)
 
-        self.List = dm.get_db_for_tree()
-
-        for row_data in enumerate(self.List):
-            logging.info(msg="Print in iterator")
-            print(row_data)
-            self.tree.insert("", "end", values=row_data)
-            logging.info(msg="Print in iterator end")
+        self.Conn = sqlite3.connect("../data/patient.db")
+        logging.info(msg='Connecting with patient.db')
+        #Sql query
+        self.sql = 'SELECT * FROM assignment ORDER BY id ASC'
+        for rows in self.Conn.execute(self.sql):
+            self.tree.insert("","end",values= rows)
+     
 
     # Def
     def AddCase(self):
@@ -126,7 +122,7 @@ class Application(tk.Frame):
         self.dirpath=filedialog.asksaveasfilename(filetypes=fTyp)
         dm.get_db_for_csv(dirpath_csv=self.dirpath)
         logging.info(msg='Export output.csv from GUI')
-
+            
 root = tk.Tk()
 app = Application(master=root)
 app.mainloop()

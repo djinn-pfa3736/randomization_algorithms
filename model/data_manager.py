@@ -78,20 +78,20 @@ class DataManager(object):
             print(rows)
         logging.info(msg='Print database')
         
-    def get_db_for_tree(self):
-        self.cursor.execute('SELECT id, recruted_date, hospital, hospital_id,\
-        patient_name, assign FROM assignment WHERE exclusion == 0 ORDER BY id ASC')
-        #for self.rows in enumerate(self.cursor.fetchall()):
-        self.result=[]
-        #print(type(self.result))
-        #print(type(self.result))
-        for rows in self.cursor.fetchall():
-            logging.info (msg="For loop")
-            print(self.result)
-            print(type(rows))
-            print(rows)
-            self.result=self.result.append(rows)
-            print(self.result)
+    # def get_db_for_tree(self):
+    #     self.cursor.execute('SELECT id, recruted_date, hospital, hospital_id,\
+    #     patient_name, assign FROM assignment WHERE exclusion == 0 ORDER BY id ASC')
+    #     #for self.rows in enumerate(self.cursor.fetchall()):
+    #     self.result=[]
+    #     #print(type(self.result))
+    #     #print(type(self.result))
+    #     for rows in self.cursor.fetchall():
+    #         logging.info (msg="For loop")
+    #         #self.Rows= list(rows)
+    #         print(type(self.result))
+    #         print(rows)
+    #         self.result = self.result.append(rows)
+    #         print(self.result)
             
         
         return(self.result)
