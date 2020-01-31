@@ -98,7 +98,7 @@ class Application(tk.Frame):
 
         for row_data in enumerate(self.List):
             logging.info(msg="Print in iterator")
-            print(srow_data)
+            print(row_data)
             self.tree.insert("", "end", values=row_data)
             logging.info(msg="Print in iterator end")
 

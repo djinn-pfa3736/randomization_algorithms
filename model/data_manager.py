@@ -82,9 +82,18 @@ class DataManager(object):
         self.cursor.execute('SELECT id, recruted_date, hospital, hospital_id,\
         patient_name, assign FROM assignment WHERE exclusion == 0 ORDER BY id ASC')
         #for self.rows in enumerate(self.cursor.fetchall()):
-        for self.rows in self.cursor.fetchall():
-            print(self.rows)
-            self.result=[]
+        self.result=[]
+        #print(type(self.result))
+        #print(type(self.result))
+        for rows in self.cursor.fetchall():
+            logging.info (msg="For loop")
+            print(self.result)
+            print(type(rows))
+            print(rows)
+            self.result=self.result.append(rows)
+            print(self.result)
+            
+        
         return(self.result)
     
     def get_db_for_csv(self, dirpath_csv):
@@ -109,4 +118,9 @@ class DataManager(object):
 if __name__ == '__main__':
     logging.info(msg="Test iterator")
     dm = DataManager()
-    dm.get_db_for_csv()
+    List=dm.get_db_for_tree()
+    #print(List)
+    print(type(List))
+    print(List)
+    print(len(List))
+ 
