@@ -70,7 +70,7 @@ class Application(tk.Frame):
         # export
         self.bt_export = tk.Button(self.fm_1)
         self.bt_export["text"] = "Export"
-        self.bt_export.grid(row=1, column=1, padx=2, pady=2)
+        self.bt_export.grid(row=2, column=0, padx=2, pady=2)
         self.bt_export["command"] = self.Export
 
         # Tree view
