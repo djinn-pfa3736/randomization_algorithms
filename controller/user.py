@@ -19,12 +19,13 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # Set Directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 sys.path += [os.path.dirname('../')]
-logging.info(msg=sys.path)
+# logging.info(msg=sys.path)
 sys.path += [os.path.dirname('.')]
-logging.info(msg=sys.path)
+# logging.info(msg=sys.path)
 from model import data_manager, get_date
 
 dm = data_manager.DataManager()
+
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -33,7 +34,20 @@ class Application(tk.Frame):
         master.geometry("500x500")
         self.pack()
         self.create_widgets()
-
+    # * Basic function
+    ## * Get  database into tree view
+    def get_db_into_tree(self):
+        self.Conn = sqlite3.connect("../data/patient.db")
+        logging.info(msg='Connecting with patient.db')
+        #Sql query
+        self.sql = 'SELECT * FROM assignment ORDER BY id DESC'
+        for rows in self.Conn.execute(self.sql):
+            self.tree.insert("","end",values= rows)
+        self.Conn.close()
+    ## * Delete all rows in tree view
+    def delete_all_tree (self):
+        for row in self.tree.get_children():
+                self.tree.delete(row)
     def create_widgets(self):
         # Pane
         self.pw_main = tk.PanedWindow(self.master, orient='vertical')
@@ -44,33 +58,59 @@ class Application(tk.Frame):
         self.pw_2 = tk.PanedWindow(
             self.pw_main, bg="grey", orient='vertical')
         self.pw_main.add(self.pw_2)
+        
+        
         # Frame
-        self.fm_1 = tk.Frame(self.pw_1, bd=2, relief="ridge")
+        ## fm_1 containing bt.add 
+        self.fm_1 = tk.Frame(self.pw_1, bd=0, relief="flat")
         self.pw_1.add(self.fm_1)
-        self.fm_2 = tk.Frame(self.pw_2, bd=2, relief="ridge")
-        self.pw_2.add(self.fm_2)
-        # Frame top (pw_1)
-        # Label "menu"
-        self.lb = tk.Label(self.fm_1)
-        self.lb["text"] = "Case manager"
-        self.lb.pack(side="left")
-        self.lb.grid(row=0, column=0, padx=2, pady=2)
+        ## fm_2 containing export
+        self.fm_2 = tk.Frame(self.pw_1, bd = 0, relief= "flat")
+        self.pw_1.add(self.fm_2)
+        ## fm_3 containing treeview
+        self.fm_3 = tk.Frame(self.pw_2, bd=0, relief="flat")
+        self.fm_3.propagate(True)
+        self.pw_2.add(self.fm_3)
 
         # Bt
         # add case
         self.bt_add = tk.Button(self.fm_1)
-        self.bt_add["text"] = "New case"
-        self.bt_add.grid(row=1, column=0, padx=2, pady=2, sticky=tk.W+tk.E)
+        self.bt_add["text"] = "Add"
+        self.bt_add.grid(row=1, column=3, padx=2, pady=2, sticky=tk.W+tk.E)
         self.bt_add["command"] = self.AddCase
-
+        # spinbox_institution
+        self.sptxt = tk.StringVar()
+        self.List_in = ["Nakagami","Tomishiro","Ohama"]
+        self.spbox_in = tk.Spinbox(self.fm_1,width = 10,textvariable=self.sptxt, value = self.List_in)
+        self.spbox_in.grid (row= 1, column= 0, padx= 2, pady = 2, sticky =tk.W+tk.E)
+        self.lb_spbox_in = tk.Label (self.fm_1)
+        self.lb_spbox_in["text"]= "Institution"
+        self.lb_spbox_in.grid(row = 0, column = 0, padx = 2, pady =2)
+        
+        # entrybox_institutionalid(inid)
+        self.en_inid = tk.Entry(self.fm_1, width = 10)
+        self.en_inid.grid(row= 1, column= 1, padx= 2, pady = 2, sticky =tk.W+tk.E)
+        self.en_inid.insert(tk.END, '00000')
+        self.lb_en_inid = tk.Label (self.fm_1)
+        self.lb_en_inid["text"]= "ID"
+        self.lb_en_inid.grid(row = 0, column = 1, padx = 2, pady =2)
+        
+        # entrybox_name
+        self.en_name = tk.Entry(self.fm_1, width = 10)
+        self.en_name.grid(row= 1, column= 2, padx= 2, pady = 2, sticky =tk.W+tk.E)
+        self.en_name.insert(tk.END, 'Name')
+        self.lb_en_name = tk.Label (self.fm_1)
+        self.lb_en_name["text"]= "Name"
+        self.lb_en_name.grid(row = 0, column = 2, padx = 2, pady =2)
+        
         # export
-        self.bt_export = tk.Button(self.fm_1)
+        self.bt_export = tk.Button(self.fm_2)
         self.bt_export["text"] = "Export"
         self.bt_export.grid(row=2, column=0, padx=2, pady=2, sticky=tk.W+tk.E)
         self.bt_export["command"] = self.Export
 
         # Tree view
-        self.tree = ttk.Treeview(self.fm_2)
+        self.tree = ttk.Treeview(self.fm_3,height = 20)
         self.tree["column"] = (1, 2, 3, 4, 5, 6)
         self.tree["show"] = "headings"
 
@@ -89,30 +129,57 @@ class Application(tk.Frame):
         self.tree.heading(6, text="Assigned")
 
         self.tree.pack(fill=tk.BOTH)
+        
+        self.get_db_into_tree()
 
-        self.Conn = sqlite3.connect("../data/patient.db")
-        logging.info(msg='Connecting with patient.db')
-        #Sql query
-        self.sql = 'SELECT * FROM assignment ORDER BY id ASC'
-        for rows in self.Conn.execute(self.sql):
-            self.tree.insert("","end",values= rows)
-     
+        # self.Conn = sqlite3.connect("../data/patient.db")
+        # logging.info(msg='Connecting with patient.db')
+        # #Sql query
+        # self.sql = 'SELECT * FROM assignment ORDER BY id DESC'
+        # for rows in self.Conn.execute(self.sql):
+        #     self.tree.insert("","end",values= rows)
+        # self.Conn.close()
 
     # Def
     def AddCase(self):
-
-        self.res_add1 = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
+        
+        #* Get text "self,HospitalName=None, HospitalID=None, PatientName = None"
+        
+        self.txt_HospitalName= self.spbox_in.get()
+        self.txt_HospitalID= self.en_inid.get()
+        self.txt_PatientName= self.en_name.get()
+        print(self.txt_PatientName)
+        logging.info(msg = 'Get value from entrybox')
+        # if not self.txt_HospitalName:
+            
+        #     self.mes_HospitalName_blank = messagebox.askquestion("Confirmation", "Institution is blank. Is it OK?", icon='warning')
+            
+        #     print(self.mes_HospitalName_blank)
+            
+        #     if self.mes_HospitalName_blank == 'yes':
+        #         self.txt_HospitalName = "None"
+        # #     else:
+        # #         return
+        # # else:
+        # #     pass
+        
+        #Message box
+        self.mes_add_confirmation = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
                                                This operation cannot be undone.", icon='warning')
-        print(self.res_add1)
-        if self.res_add1 == 'yes':
-            dm.add_case()
-            dm.print_db()
-            self.res_add2 = messagebox.showinfo(
+        print(self.mes_add_confirmation)
+        if self.mes_add_confirmation == 'yes':
+            dm.add_case(HospitalName=self.txt_HospitalName, HospitalID=self.txt_HospitalID, PatientName=self.txt_PatientName)
+            #dm.print_db()
+            self.mes_success = messagebox.showinfo(
                 "Info", "New case is now added and assined, successfully.")
-            print("showinfo", self.res_add2)
+            print("showinfo", self.mes_success)
+            
+            self.delete_all_tree ()
+            self.get_db_into_tree()
+
         else:
             return
-
+        
         logging.info(msg='Add data base from GUI')
 
     def Export(self): 

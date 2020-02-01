@@ -29,28 +29,28 @@ class DataManager(object):
     def connect(self):
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
-        AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id INTEGER,\
+        AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id TEXT,\
         patient_name TEXT, assign TEXT, exclusion INTEGER)")
 
         logging.info(msg='Connecting with patient.db')
 
-    def add_case(self):
-        # Get assigned_group
-        self.assigned_group = self.randomization.simple_randomization_ver1()
-        self.tm = get_date.TimeManager()
+    # def add_case(self):
+    #     # Get assigned_group
+    #     self.assigned_group = self.randomization.simple_randomization_ver1()
+    #     self.tm = get_date.TimeManager()
 
-        # Get today
-        self.today = self.tm.GetDate()
-        logging.info(msg='self.today is '+self.today)
+    #     # Get today
+    #     self.today = self.tm.GetDate()
+    #     logging.info(msg='self.today is '+self.today)
 
-        self.cursor.execute("insert into assignment(recruted_date, assign) values (?,?)", [self.today,
-                                                                                           self.assigned_group])
+    #     self.cursor.execute("insert into assignment(recruted_date, assign) values (?,?)", [self.today,
+    #                                                                                        self.assigned_group])
 
-        self.conn.commit()
+    #     self.conn.commit()
 
-        logging.info(msg='Insert a case into patient.db')
+    #     logging.info(msg='Insert a case into patient.db')
 
-    def add_case2(self,HospitalName='Hospital', HospitalID='11111', PatientName = 'No Name'):
+    def add_case(self,HospitalName=None, HospitalID=None, PatientName = None):
         # Get assigned_group
         self.assigned_group = self.randomization.simple_randomization_ver1()
         self.tm=get_date.TimeManager()
@@ -77,38 +77,9 @@ class DataManager(object):
         for rows in self.cursor.fetchall():
             print(rows)
         logging.info(msg='Print database')
-        
-    # def get_db_for_tree(self):
-    #     self.cursor.execute('SELECT id, recruted_date, hospital, hospital_id,\
-    #     patient_name, assign FROM assignment WHERE exclusion == 0 ORDER BY id ASC')
-    #     #for self.rows in enumerate(self.cursor.fetchall()):
-    #     self.result=[]
-    #     #print(type(self.result))
-    #     #print(type(self.result))
-    #     for rows in self.cursor.fetchall():
-    #         logging.info (msg="For loop")
-    #         #self.Rows= list(rows)
-    #         print(type(self.result))
-    #         print(rows)
-    #         self.result = self.result.append(rows)
-    #         print(self.result)
-            
-        
-        return(self.result)
     
-    def get_db_for_csv(self, dirpath_csv):
-        self.cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
-        self.path = dirpath_csv
-       
-        with open(self.path,'w') as self.csv_file:
-            self.csv_export = csv.writer(self.csv_file)
-            # write header                        
-            self.csv_export.writerow([d[0] for d in self.cursor.description])
-            # write data                          
-            for result in self.cursor:
-                self.csv_export.writerow(result)
         
-        
+   
     def __del__(self):
         # conn = sqlite3.connect("../data/patient.db")
         self.conn.close()
