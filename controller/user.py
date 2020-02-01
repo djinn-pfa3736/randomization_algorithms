@@ -26,8 +26,6 @@ from model import data_manager, get_date
 
 dm = data_manager.DataManager()
 
-#Def
-
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -88,9 +86,11 @@ class Application(tk.Frame):
         self.lb_spbox_in = tk.Label (self.fm_1)
         self.lb_spbox_in["text"]= "Institution"
         self.lb_spbox_in.grid(row = 0, column = 0, padx = 2, pady =2)
+        
         # entrybox_institutionalid(inid)
         self.en_inid = tk.Entry(self.fm_1, width = 10)
         self.en_inid.grid(row= 1, column= 1, padx= 2, pady = 2, sticky =tk.W+tk.E)
+        self.en_inid.insert(tk.END, '00000')
         self.lb_en_inid = tk.Label (self.fm_1)
         self.lb_en_inid["text"]= "ID"
         self.lb_en_inid.grid(row = 0, column = 1, padx = 2, pady =2)
@@ -98,9 +98,11 @@ class Application(tk.Frame):
         # entrybox_name
         self.en_name = tk.Entry(self.fm_1, width = 10)
         self.en_name.grid(row= 1, column= 2, padx= 2, pady = 2, sticky =tk.W+tk.E)
+        self.en_name.insert(tk.END, 'Name')
         self.lb_en_name = tk.Label (self.fm_1)
         self.lb_en_name["text"]= "Name"
         self.lb_en_name.grid(row = 0, column = 2, padx = 2, pady =2)
+        
         # export
         self.bt_export = tk.Button(self.fm_2)
         self.bt_export["text"] = "Export"
@@ -140,18 +142,37 @@ class Application(tk.Frame):
 
     # Def
     def AddCase(self):
+        
         #* Get text "self,HospitalName=None, HospitalID=None, PatientName = None"
- 
+        
+        self.txt_HospitalName= self.spbox_in.get()
+        self.txt_HospitalID= self.en_inid.get()
+        self.txt_PatientName= self.en_name.get()
+        print(self.txt_PatientName)
+        logging.info(msg = 'Get value from entrybox')
+        # if not self.txt_HospitalName:
+            
+        #     self.mes_HospitalName_blank = messagebox.askquestion("Confirmation", "Institution is blank. Is it OK?", icon='warning')
+            
+        #     print(self.mes_HospitalName_blank)
+            
+        #     if self.mes_HospitalName_blank == 'yes':
+        #         self.txt_HospitalName = "None"
+        # #     else:
+        # #         return
+        # # else:
+        # #     pass
+        
         #Message box
-        self.res_add1 = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
+        self.mes_add_confirmation = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
                                                This operation cannot be undone.", icon='warning')
-        print(self.res_add1)
-        if self.res_add1 == 'yes':
-            dm.add_case()
-            dm.print_db()
-            self.res_add2 = messagebox.showinfo(
+        print(self.mes_add_confirmation)
+        if self.mes_add_confirmation == 'yes':
+            dm.add_case(HospitalName=self.txt_HospitalName, HospitalID=self.txt_HospitalID, PatientName=self.txt_PatientName)
+            #dm.print_db()
+            self.mes_success = messagebox.showinfo(
                 "Info", "New case is now added and assined, successfully.")
-            print("showinfo", self.res_add2)
+            print("showinfo", self.mes_success)
             
             self.delete_all_tree ()
             self.get_db_into_tree()

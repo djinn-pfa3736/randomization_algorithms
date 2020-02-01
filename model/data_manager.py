@@ -29,7 +29,7 @@ class DataManager(object):
     def connect(self):
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
-        AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id INTEGER,\
+        AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id TEXT,\
         patient_name TEXT, assign TEXT, exclusion INTEGER)")
 
         logging.info(msg='Connecting with patient.db')
