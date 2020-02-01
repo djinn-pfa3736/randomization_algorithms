@@ -34,23 +34,23 @@ class DataManager(object):
 
         logging.info(msg='Connecting with patient.db')
 
-    def add_case(self):
-        # Get assigned_group
-        self.assigned_group = self.randomization.simple_randomization_ver1()
-        self.tm = get_date.TimeManager()
+    # def add_case(self):
+    #     # Get assigned_group
+    #     self.assigned_group = self.randomization.simple_randomization_ver1()
+    #     self.tm = get_date.TimeManager()
 
-        # Get today
-        self.today = self.tm.GetDate()
-        logging.info(msg='self.today is '+self.today)
+    #     # Get today
+    #     self.today = self.tm.GetDate()
+    #     logging.info(msg='self.today is '+self.today)
 
-        self.cursor.execute("insert into assignment(recruted_date, assign) values (?,?)", [self.today,
-                                                                                           self.assigned_group])
+    #     self.cursor.execute("insert into assignment(recruted_date, assign) values (?,?)", [self.today,
+    #                                                                                        self.assigned_group])
 
-        self.conn.commit()
+    #     self.conn.commit()
 
-        logging.info(msg='Insert a case into patient.db')
+    #     logging.info(msg='Insert a case into patient.db')
 
-    def add_case2(self,HospitalName='Hospital', HospitalID='11111', PatientName = 'No Name'):
+    def add_case(self,HospitalName=None, HospitalID=None, PatientName = None):
         # Get assigned_group
         self.assigned_group = self.randomization.simple_randomization_ver1()
         self.tm=get_date.TimeManager()
@@ -78,19 +78,8 @@ class DataManager(object):
             print(rows)
         logging.info(msg='Print database')
     
-    def get_db_for_csv(self, dirpath_csv):
-        self.cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
-        self.path = dirpath_csv
-       
-        with open(self.path,'w') as self.csv_file:
-            self.csv_export = csv.writer(self.csv_file)
-            # write header                        
-            self.csv_export.writerow([d[0] for d in self.cursor.description])
-            # write data                          
-            for result in self.cursor:
-                self.csv_export.writerow(result)
         
-        
+   
     def __del__(self):
         # conn = sqlite3.connect("../data/patient.db")
         self.conn.close()

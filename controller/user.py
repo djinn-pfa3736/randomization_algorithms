@@ -19,12 +19,15 @@ logging.basicConfig(level=logging.INFO, format=formatter)
 # Set Directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 sys.path += [os.path.dirname('../')]
-logging.info(msg=sys.path)
+# logging.info(msg=sys.path)
 sys.path += [os.path.dirname('.')]
-logging.info(msg=sys.path)
+# logging.info(msg=sys.path)
 from model import data_manager, get_date
 
 dm = data_manager.DataManager()
+
+#Def
+
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -33,7 +36,20 @@ class Application(tk.Frame):
         master.geometry("500x500")
         self.pack()
         self.create_widgets()
-
+    # * Basic function
+    ## * Get  database into tree view
+    def get_db_into_tree(self):
+        self.Conn = sqlite3.connect("../data/patient.db")
+        logging.info(msg='Connecting with patient.db')
+        #Sql query
+        self.sql = 'SELECT * FROM assignment ORDER BY id DESC'
+        for rows in self.Conn.execute(self.sql):
+            self.tree.insert("","end",values= rows)
+        self.Conn.close()
+    ## * Delete all rows in tree view
+    def delete_all_tree (self):
+        for row in self.tree.get_children():
+                self.tree.delete(row)
     def create_widgets(self):
         # Pane
         self.pw_main = tk.PanedWindow(self.master, orient='vertical')
@@ -57,12 +73,6 @@ class Application(tk.Frame):
         self.fm_3 = tk.Frame(self.pw_2, bd=0, relief="flat")
         self.fm_3.propagate(True)
         self.pw_2.add(self.fm_3)
-        # Frame top (pw_1)
-        # Label "menu"
-        # self.lb = tk.Label(self.fm_1)
-        # self.lb["text"] = "Case manager"
-        # self.lb.pack(side="left")
-        # self.lb.grid(row=0, column=0, padx=2, pady=2)
 
         # Bt
         # add case
@@ -117,18 +127,22 @@ class Application(tk.Frame):
         self.tree.heading(6, text="Assigned")
 
         self.tree.pack(fill=tk.BOTH)
+        
+        self.get_db_into_tree()
 
-        self.Conn = sqlite3.connect("../data/patient.db")
-        logging.info(msg='Connecting with patient.db')
-        #Sql query
-        self.sql = 'SELECT * FROM assignment ORDER BY id ASC'
-        for rows in self.Conn.execute(self.sql):
-            self.tree.insert("","end",values= rows)
-     
+        # self.Conn = sqlite3.connect("../data/patient.db")
+        # logging.info(msg='Connecting with patient.db')
+        # #Sql query
+        # self.sql = 'SELECT * FROM assignment ORDER BY id DESC'
+        # for rows in self.Conn.execute(self.sql):
+        #     self.tree.insert("","end",values= rows)
+        # self.Conn.close()
 
     # Def
     def AddCase(self):
-
+        #* Get text "self,HospitalName=None, HospitalID=None, PatientName = None"
+ 
+        #Message box
         self.res_add1 = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
                                                This operation cannot be undone.", icon='warning')
         print(self.res_add1)
@@ -138,10 +152,10 @@ class Application(tk.Frame):
             self.res_add2 = messagebox.showinfo(
                 "Info", "New case is now added and assined, successfully.")
             print("showinfo", self.res_add2)
-            #Sql query
-            self.sql = 'SELECT * FROM assignment ORDER BY id ASC'
-            for rows in self.Conn.execute(self.sql):
-                self.tree.insert("","end",values= rows)
+            
+            self.delete_all_tree ()
+            self.get_db_into_tree()
+
         else:
             return
         
