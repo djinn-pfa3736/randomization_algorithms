@@ -150,36 +150,31 @@ class Application(tk.Frame):
         self.txt_PatientName= self.en_name.get()
         print(self.txt_PatientName)
         logging.info(msg = 'Get value from entrybox')
-        # if not self.txt_HospitalName:
-            
-        #     self.mes_HospitalName_blank = messagebox.askquestion("Confirmation", "Institution is blank. Is it OK?", icon='warning')
-            
-        #     print(self.mes_HospitalName_blank)
-            
-        #     if self.mes_HospitalName_blank == 'yes':
-        #         self.txt_HospitalName = "None"
-        # #     else:
-        # #         return
-        # # else:
-        # #     pass
         
-        #Message box
-        self.mes_add_confirmation = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
-                                               This operation cannot be undone.", icon='warning')
-        print(self.mes_add_confirmation)
-        if self.mes_add_confirmation == 'yes':
-            dm.add_case(HospitalName=self.txt_HospitalName, HospitalID=self.txt_HospitalID, PatientName=self.txt_PatientName)
-            #dm.print_db()
-            self.mes_success = messagebox.showinfo(
-                "Info", "New case is now added and assined, successfully.")
-            print("showinfo", self.mes_success)
+        if (not self.txt_HospitalName or not self.txt_HospitalID or not self.txt_PatientName):
+            self.mes_blank = messagebox.showwarning("Warning", "Please fill Institution, ID, and Name.")
+            print(self.mes_blank)
             
-            self.delete_all_tree ()
-            self.get_db_into_tree()
-
-        else:
             return
-        
+        else:
+       
+            #Message box
+            self.mes_add_confirmation = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
+                                                This operation cannot be undone.", icon='warning')
+            print(self.mes_add_confirmation)
+            if self.mes_add_confirmation == 'yes':
+                dm.add_case(HospitalName=self.txt_HospitalName, HospitalID=self.txt_HospitalID, PatientName=self.txt_PatientName)
+                #dm.print_db()
+                self.mes_success = messagebox.showinfo(
+                    "Info", "New case is now added and assined, successfully.")
+                print("showinfo", self.mes_success)
+                
+                self.delete_all_tree ()
+                self.get_db_into_tree()
+
+            else:
+                return
+            
         logging.info(msg='Add data base from GUI')
 
     def Export(self): 
