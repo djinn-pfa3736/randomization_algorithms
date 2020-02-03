@@ -1,0 +1,13 @@
+{
+    "study_groups": {
+        "GroupA": "Control",
+        "GroupB": "Treatment"
+    },
+    "study_preferences": {
+        "trial": "Test Trial",
+        "primary investigater": "Satoshi Yamaguchi",
+        "contact": "satoshi-yamaguchi@umin.ac.jp",
+        "inclusion criteria": "Heart failure required for hospialization ",
+        "number": 300
+    }
+}

@@ -2,13 +2,19 @@
 
 import json
 import os
+import sys
 
+
+#Set directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+ 
+print(sys.path)
 
 class GetStudyGroups(object):
 
     def get_var_Groups_ver1(self):
-        os.chdir(os.path.dirname(os.path.abspath(__file__)))
-        self.study_group_file = open('study_data.json', 'r')
+       
+        self.study_group_file = open('../data/test_study_data.json', 'r')
         self.study_group_object = json.load(self.study_group_file)
         return self.study_group_object
 
