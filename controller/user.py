@@ -274,7 +274,7 @@ class Application(tk.Frame):
                 
                 self.delete_all_tree ()
                 self.get_db_into_tree()
-                ProgressBar(self)
+                self.ProgressBar(self)
             else:
                 return
             
