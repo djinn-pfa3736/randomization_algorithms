@@ -5,9 +5,10 @@
     },
     "study_preferences": {
         "trial": "Test Trial",
-        "primary investigater": "Satoshi Yamaguchi",
+        "principal investigator": "Satoshi Yamaguchi",
         "contact": "satoshi-yamaguchi@umin.ac.jp",
-        "inclusion criteria": "Heart failure required for hospialization ",
-        "number": 300
+        "number": 300,
+        "randomization": "Simple randomization",
+        "institution": ["Hopital A", "Hospital B", "Hospital C"]
     }
 }

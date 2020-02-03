@@ -11,7 +11,7 @@ sys.path += [os.path.dirname('.')]
 
 class JsonManager(object):
     def get_json_object(self):
-        with open('../data/test_study_data.json', 'r') as self.f:
+        with open('../data/study_data.json', 'r') as self.f:
             self.json_dict = json.load(self.f)
             return self.json_dict
             
