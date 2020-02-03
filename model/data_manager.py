@@ -9,6 +9,7 @@ import sys
 import csv
 
 import pdb
+import json_manager
 
 # Logging setting
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -34,21 +35,6 @@ class DataManager(object):
 
         logging.info(msg='Connecting with patient.db')
 
-    # def add_case(self):
-    #     # Get assigned_group
-    #     self.assigned_group = self.randomization.simple_randomization_ver1()
-    #     self.tm = get_date.TimeManager()
-
-    #     # Get today
-    #     self.today = self.tm.GetDate()
-    #     logging.info(msg='self.today is '+self.today)
-
-    #     self.cursor.execute("insert into assignment(recruted_date, assign) values (?,?)", [self.today,
-    #                                                                                        self.assigned_group])
-
-    #     self.conn.commit()
-
-    #     logging.info(msg='Insert a case into patient.db')
 
     def add_case(self,HospitalName=None, HospitalID=None, PatientName = None):
         # Get assigned_group
@@ -77,8 +63,6 @@ class DataManager(object):
         for rows in self.cursor.fetchall():
             print(rows)
         logging.info(msg='Print database')
-    
-        
    
     def __del__(self):
         # conn = sqlite3.connect("../data/patient.db")
@@ -87,11 +71,4 @@ class DataManager(object):
 
 
 if __name__ == '__main__':
-    logging.info(msg="Test iterator")
-    dm = DataManager()
-    List=dm.get_db_for_tree()
-    #print(List)
-    print(type(List))
-    print(List)
-    print(len(List))
- 
+ pass

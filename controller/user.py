@@ -22,16 +22,26 @@ sys.path += [os.path.dirname('../')]
 # logging.info(msg=sys.path)
 sys.path += [os.path.dirname('.')]
 # logging.info(msg=sys.path)
-from model import data_manager, get_date
+# Import packages from model
+from model import data_manager, get_date, json_manager
 
+# Make instances
 dm = data_manager.DataManager()
+json_manager = json_manager.JsonManager()
+json_dict=json_manager.get_json_object()
 
+Contact = json_dict['study_preferences']['contact']
 
+Number = json_dict['study_preferences']['number']
+Rondomization =json_dict['study_preferences']['randomization']
+PI = json_dict['study_preferences']['principal investigator']
+Trial =json_dict['study_preferences']['trial']
+Institution = json_dict['study_preferences']['institution']
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
-        master.title("Simple randomization")
-        master.geometry("500x500")
+        master.title(Rondomization)
+        master.geometry("500x600")
         self.pack()
         self.create_widgets()
     # * Basic function
@@ -52,7 +62,9 @@ class Application(tk.Frame):
         # Pane
         self.pw_main = tk.PanedWindow(self.master, orient='vertical')
         self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
-
+        
+        self.pw_header = tk.PanedWindow(self.pw_main, bg = "grey", orient = 'vertical')
+        self.pw_main.add(self.pw_header)
         self.pw_1 = tk.PanedWindow(self.pw_main, bg="grey", orient='vertical')
         self.pw_main.add(self.pw_1)
         self.pw_2 = tk.PanedWindow(
@@ -61,17 +73,34 @@ class Application(tk.Frame):
         
         
         # Frame
+        # fm_header containing study info
+        self.fm_header = tk.LabelFrame(self.pw_header, bd = 2 , relief = 'ridge', text='Information')
+        self.pw_header.add (self.fm_header)
         ## fm_1 containing bt.add 
         self.fm_1 = tk.Frame(self.pw_1, bd=0, relief="flat")
         self.pw_1.add(self.fm_1)
         ## fm_2 containing export
-        self.fm_2 = tk.Frame(self.pw_1, bd = 0, relief= "flat")
+        self.fm_2 = tk.Frame(self.pw_1, bd =0, relief= "flat")
         self.pw_1.add(self.fm_2)
         ## fm_3 containing treeview
         self.fm_3 = tk.Frame(self.pw_2, bd=0, relief="flat")
         self.fm_3.propagate(True)
         self.pw_2.add(self.fm_3)
-
+        
+        # // TODO Lbel hearder
+        #Header
+        self.lb_header_trial = tk.Label(self.fm_header)
+        self.lb_header_trial ["text"]= "Trial: "+Trial
+        self.lb_header_trial.grid(row= 0, column= 0, padx= 2, pady = 2, sticky =tk.W)
+        
+        # self.lb_header_pi = tk.Label(self.fm_header)
+        # self.lb_header_pi ["text"]= "PI: "+ PI +", Contact: " + Contact
+        # self.lb_header_pi.grid(row= 1, column= 0, padx= 2, pady = 2, sticky =tk.W)
+        
+        self.lb_header_n = tk.Label(self.fm_header)
+        self.lb_header_n ["text"]= "Target sample size: " + str(Number)
+        self.lb_header_n.grid(row= 1, column= 0, padx= 2, pady = 2, sticky =tk.W)
+        
         # Bt
         # add case
         self.bt_add = tk.Button(self.fm_1)
@@ -80,12 +109,13 @@ class Application(tk.Frame):
         self.bt_add["command"] = self.AddCase
         # spinbox_institution
         self.sptxt = tk.StringVar()
-        self.List_in = ["Nakagami","Tomishiro","Ohama"]
+        self.List_in = Institution
         self.spbox_in = tk.Spinbox(self.fm_1,width = 10,textvariable=self.sptxt, value = self.List_in)
         self.spbox_in.grid (row= 1, column= 0, padx= 2, pady = 2, sticky =tk.W+tk.E)
         self.lb_spbox_in = tk.Label (self.fm_1)
         self.lb_spbox_in["text"]= "Institution"
         self.lb_spbox_in.grid(row = 0, column = 0, padx = 2, pady =2)
+        
         
         # entrybox_institutionalid(inid)
         self.en_inid = tk.Entry(self.fm_1, width = 10)
