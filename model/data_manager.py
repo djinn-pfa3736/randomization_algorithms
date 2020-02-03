@@ -24,9 +24,12 @@ class DataManager(object):
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         self.conn = sqlite3.connect("../data/patient.db")
         self.cursor = self.conn.cursor()
-
         self.randomization = randomization.Randomize()
-
+        self.cursor.execute(
+            "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
+        AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id TEXT,\
+        patient_name TEXT, assign TEXT, exclusion INTEGER)")
+        
     def connect(self):
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \

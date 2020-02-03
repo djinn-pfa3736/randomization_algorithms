@@ -30,19 +30,21 @@ dm = data_manager.DataManager()
 json_manager = json_manager.JsonManager()
 json_dict=json_manager.get_json_object()
 
+# Data from Json
 Contact = json_dict['study_preferences']['contact']
-
 Number = json_dict['study_preferences']['number']
 Rondomization =json_dict['study_preferences']['randomization']
 PI = json_dict['study_preferences']['principal investigator']
 Trial =json_dict['study_preferences']['trial']
 Institution = json_dict['study_preferences']['institution']
-NCase=dm.get_row_number()
 
-if NCase/Number > 1:
-    ProgressBarLength = 1
-else:
-    ProgressBarLength = NCase/Number
+#Definition
+def get_progress_bar_length():
+    NCase=dm.get_row_number()
+    if NCase/Number > 1:
+        return(1)
+    else:
+        return(NCase/Number)
 # if Number >= 400:
 #     PrsLength = 400
 # elif Number<=200:
@@ -148,21 +150,23 @@ class Application(tk.Frame):
         
         #TODO Making def progress bar
         def ProgressBar(self):
+            self.ProgressBarLength = get_progress_bar_length()
+            logging.info(msg="Progressbar"+str(self.ProgressBarLength))
             self.s = ttk.Style()
             self.s.theme_use('clam')
-            if ProgressBarLength<0.3:
+            if self.ProgressBarLength<0.3:
                 self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
-            elif (ProgressBarLength>= 0.3 and ProgressBarLength<0.6):
+            elif (self.ProgressBarLength>= 0.3 and ProgressBarLength<0.6):
                 self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
-            elif (ProgressBarLength>= 0.6 and ProgressBarLength<0.9):
+            elif (self.ProgressBarLength>= 0.6 and ProgressBarLength<0.9):
                 self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
-            elif (ProgressBarLength>= 0.9 and ProgressBarLength <1):
+            elif (self.ProgressBarLength>= 0.9 and ProgressBarLength <1):
                 self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
             else:
                 self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
             # #Progressbar
             self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=400 , mode='determinate', style= "Horizontal.TProgressbar")
-            self.prs_bar.configure( maximum = 1, value = ProgressBarLength)
+            self.prs_bar.configure( maximum = 1, value = self.ProgressBarLength)
             self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky=(tk.N,tk.E,tk.S,tk.W))
             
             self.lb_header_max = tk.Label(self.fm_prs_bar)
@@ -270,7 +274,6 @@ class Application(tk.Frame):
                 
                 self.delete_all_tree ()
                 self.get_db_into_tree()
-                NCase=dm.get_row_number()
                 ProgressBar(self)
             else:
                 return
