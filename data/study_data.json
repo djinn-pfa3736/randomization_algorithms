@@ -7,7 +7,7 @@
         "trial": "Test Trial",
         "principal investigator": "Satoshi Yamaguchi",
         "contact": "satoshi-yamaguchi@umin.ac.jp",
-        "number": 300,
+        "number": 200,
         "randomization": "Simple randomization",
         "institution": ["Hopital A", "Hospital B", "Hospital C"]
     }

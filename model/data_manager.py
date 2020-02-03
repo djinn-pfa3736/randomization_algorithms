@@ -63,6 +63,12 @@ class DataManager(object):
         for rows in self.cursor.fetchall():
             print(rows)
         logging.info(msg='Print database')
+    
+    def get_row_number(self):
+        self.cursor.execute('SELECT count(*) FROM assignment')
+        self.result = self.cursor.fetchall()
+        return(self.result[0][0])
+
    
     def __del__(self):
         # conn = sqlite3.connect("../data/patient.db")
@@ -71,4 +77,7 @@ class DataManager(object):
 
 
 if __name__ == '__main__':
- pass
+    dm=DataManager()
+    result=dm.get_row_number()
+    print(result)
+    print(type(result))
