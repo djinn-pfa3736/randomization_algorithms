@@ -10,7 +10,7 @@ from tkinter import filedialog
 import tkinter.ttk as ttk
 from tkinter import messagebox
 import sqlite3
-
+from tkinter import ttk as ttk
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -61,10 +61,12 @@ class Application(tk.Frame):
     def create_widgets(self):
         # Pane
         self.pw_main = tk.PanedWindow(self.master, orient='vertical')
-        self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
         
+        self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
         self.pw_header = tk.PanedWindow(self.pw_main, bg = "grey", orient = 'vertical')
         self.pw_main.add(self.pw_header)
+        self.pw_prs_bar = tk.PanedWindow(self.pw_main, bg = "grey", orient = 'vertical')
+        self.pw_main.add(self.pw_prs_bar)
         self.pw_1 = tk.PanedWindow(self.pw_main, bg="grey", orient='vertical')
         self.pw_main.add(self.pw_1)
         self.pw_2 = tk.PanedWindow(
@@ -76,6 +78,8 @@ class Application(tk.Frame):
         # fm_header containing study info
         self.fm_header = tk.LabelFrame(self.pw_header, bd = 2 , relief = 'ridge', text='Information')
         self.pw_header.add (self.fm_header)
+        self.fm_prs_bar = tk.Frame(self.pw_prs_bar, bd=0, relief="flat")
+        self.pw_prs_bar.add(self.fm_prs_bar)
         ## fm_1 containing bt.add 
         self.fm_1 = tk.Frame(self.pw_1, bd=0, relief="flat")
         self.pw_1.add(self.fm_1)
@@ -87,7 +91,7 @@ class Application(tk.Frame):
         self.fm_3.propagate(True)
         self.pw_2.add(self.fm_3)
         
-        # // TODO Lbel hearder
+    
         #Header
         self.lb_header_trial = tk.Label(self.fm_header)
         self.lb_header_trial ["text"]= "Trial: "+Trial
@@ -101,6 +105,22 @@ class Application(tk.Frame):
         self.lb_header_n ["text"]= "Target sample size: " + str(Number)
         self.lb_header_n.grid(row= 1, column= 0, padx= 2, pady = 2, sticky =tk.W)
         
+        #Progress bar in fm_header
+        self.lb_header_zero = tk.Label(self.fm_prs_bar)
+        self.lb_header_zero ["text"]= "0"
+        self.lb_header_zero.grid(row= 0, column= 0, padx= 2, pady = 2, sticky =tk.W + tk.E)
+        
+        
+        self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length= 400, mode='determinate')
+        self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky =tk.W + tk.E)
+        
+        
+        self.lb_header_max = tk.Label(self.fm_prs_bar)
+        self.lb_header_max ["text"]= str(Number)
+        self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
+        
+        
+
         # Bt
         # add case
         self.bt_add = tk.Button(self.fm_1)
