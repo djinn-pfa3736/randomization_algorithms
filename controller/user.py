@@ -37,6 +37,14 @@ Rondomization =json_dict['study_preferences']['randomization']
 PI = json_dict['study_preferences']['principal investigator']
 Trial =json_dict['study_preferences']['trial']
 Institution = json_dict['study_preferences']['institution']
+
+if Number >= 400:
+    PrsLength = 400
+elif Number<=200:
+    PrsLength = 200
+else:
+    PrsLength = Number
+
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -111,7 +119,7 @@ class Application(tk.Frame):
         self.lb_header_zero.grid(row= 0, column= 0, padx= 2, pady = 2, sticky =tk.W + tk.E)
         
         
-        self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length= 400, mode='determinate')
+        self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=PrsLength , mode='determinate')
         self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky =tk.W + tk.E)
         
         
