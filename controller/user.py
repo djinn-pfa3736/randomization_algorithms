@@ -10,7 +10,7 @@ from tkinter import filedialog
 import tkinter.ttk as ttk
 from tkinter import messagebox
 import sqlite3
-
+from tkinter import ttk as ttk
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -30,13 +30,28 @@ dm = data_manager.DataManager()
 json_manager = json_manager.JsonManager()
 json_dict=json_manager.get_json_object()
 
+# Data from Json
 Contact = json_dict['study_preferences']['contact']
-
 Number = json_dict['study_preferences']['number']
 Rondomization =json_dict['study_preferences']['randomization']
 PI = json_dict['study_preferences']['principal investigator']
 Trial =json_dict['study_preferences']['trial']
 Institution = json_dict['study_preferences']['institution']
+
+#Definition
+def get_progress_bar_length():
+    NCase=dm.get_row_number()
+    if NCase/Number > 1:
+        return(1)
+    else:
+        return(NCase/Number)
+# if Number >= 400:
+#     PrsLength = 400
+# elif Number<=200:
+#     PrsLength = 200
+# else:
+#     PrsLength = Number
+
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -61,10 +76,12 @@ class Application(tk.Frame):
     def create_widgets(self):
         # Pane
         self.pw_main = tk.PanedWindow(self.master, orient='vertical')
-        self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
         
+        self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
         self.pw_header = tk.PanedWindow(self.pw_main, bg = "grey", orient = 'vertical')
         self.pw_main.add(self.pw_header)
+        self.pw_prs_bar = tk.PanedWindow(self.pw_main, bg = "grey", orient = 'vertical')
+        self.pw_main.add(self.pw_prs_bar)
         self.pw_1 = tk.PanedWindow(self.pw_main, bg="grey", orient='vertical')
         self.pw_main.add(self.pw_1)
         self.pw_2 = tk.PanedWindow(
@@ -76,6 +93,8 @@ class Application(tk.Frame):
         # fm_header containing study info
         self.fm_header = tk.LabelFrame(self.pw_header, bd = 2 , relief = 'ridge', text='Information')
         self.pw_header.add (self.fm_header)
+        self.fm_prs_bar = tk.Frame(self.pw_prs_bar, bd=0, relief="flat")
+        self.pw_prs_bar.add(self.fm_prs_bar)
         ## fm_1 containing bt.add 
         self.fm_1 = tk.Frame(self.pw_1, bd=0, relief="flat")
         self.pw_1.add(self.fm_1)
@@ -87,7 +106,7 @@ class Application(tk.Frame):
         self.fm_3.propagate(True)
         self.pw_2.add(self.fm_3)
         
-        # // TODO Lbel hearder
+    
         #Header
         self.lb_header_trial = tk.Label(self.fm_header)
         self.lb_header_trial ["text"]= "Trial: "+Trial
@@ -101,6 +120,62 @@ class Application(tk.Frame):
         self.lb_header_n ["text"]= "Target sample size: " + str(Number)
         self.lb_header_n.grid(row= 1, column= 0, padx= 2, pady = 2, sticky =tk.W)
         
+        #Progress bar in fm_header
+        self.lb_header_zero = tk.Label(self.fm_prs_bar)
+        self.lb_header_zero ["text"]= "0"
+        self.lb_header_zero.grid(row= 0, column= 0, padx= 2, pady = 2, sticky =tk.W + tk.E)
+        
+        
+        #NOTE Progress bar original
+        # self.s = ttk.Style()
+        # self.s.theme_use('clam')
+        # if ProgressBarLength<0.3:
+        #     self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
+        # elif (ProgressBarLength>= 0.3 and ProgressBarLength<0.6):
+        #     self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
+        # elif (ProgressBarLength>= 0.6 and ProgressBarLength<0.9):
+        #     self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
+        # elif (ProgressBarLength>= 0.9 and ProgressBarLength <1):
+        #     self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
+        # else:
+        #     self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
+        # # #Progressbar
+        # self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=400 , mode='determinate', style= "Horizontal.TProgressbar")
+        # self.prs_bar.configure( maximum = 1, value = ProgressBarLength)
+        # self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky=(tk.N,tk.E,tk.S,tk.W))
+        
+        # self.lb_header_max = tk.Label(self.fm_prs_bar)
+        # self.lb_header_max ["text"]= str(Number)
+        # self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
+        
+        #TODO Making def progress bar
+        def ProgressBar(self):
+            
+            self.ProgressBarLength = get_progress_bar_length()
+            
+            logging.info(msg="Progressbar"+str(self.ProgressBarLength))
+            self.s = ttk.Style()
+            self.s.theme_use('clam')
+            if self.ProgressBarLength<0.3:
+                self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
+            elif (self.ProgressBarLength>= 0.3 and self.ProgressBarLength<0.6):
+                self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
+            elif (self.ProgressBarLength>= 0.6 and self.ProgressBarLength<0.9):
+                self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
+            elif (self.ProgressBarLength>= 0.9 and self.ProgressBarLength <1):
+                self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
+            else:
+                self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
+            # #Progressbar
+            self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=400 , mode='determinate', style= "Horizontal.TProgressbar")
+            self.prs_bar.configure( maximum = 1, value = self.ProgressBarLength)
+            self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky=(tk.N,tk.E,tk.S,tk.W))
+            
+            self.lb_header_max = tk.Label(self.fm_prs_bar)
+            self.lb_header_max ["text"]= str(Number)
+            self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
+                
+        ProgressBar(self)
         # Bt
         # add case
         self.bt_add = tk.Button(self.fm_1)
@@ -201,7 +276,30 @@ class Application(tk.Frame):
                 
                 self.delete_all_tree ()
                 self.get_db_into_tree()
-
+                ## NOTE Progress bar is showing by rewriti the code of Progress bar. 
+                self.ProgressBarLength = get_progress_bar_length()
+            
+                logging.info(msg="Progressbar"+str(self.ProgressBarLength))
+                self.s = ttk.Style()
+                self.s.theme_use('clam')
+                if self.ProgressBarLength<0.3:
+                    self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
+                elif (self.ProgressBarLength>= 0.3 and self.ProgressBarLength<0.6):
+                    self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
+                elif (self.ProgressBarLength>= 0.6 and self.ProgressBarLength<0.9):
+                    self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
+                elif (self.ProgressBarLength>= 0.9 and self.ProgressBarLength <1):
+                    self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
+                else:
+                    self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
+                # #Progressbar
+                self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=400 , mode='determinate', style= "Horizontal.TProgressbar")
+                self.prs_bar.configure( maximum = 1, value = self.ProgressBarLength)
+                self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky=(tk.N,tk.E,tk.S,tk.W))
+                
+                self.lb_header_max = tk.Label(self.fm_prs_bar)
+                self.lb_header_max ["text"]= str(Number)
+                self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
             else:
                 return
             
