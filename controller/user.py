@@ -219,11 +219,15 @@ class Application(tk.Frame):
         self.get_db_into_tree()
 
 
-
+    #TODO 
     # Definitions
     def MenuPreference(self):
-        tk.Toplevel(master=root)
-        
+        self.new_trial_window = tk.Toplevel(master=root)
+        self.new_trial_window.title("New trial")
+        self.pw_new_trial = tk.PanedWindow(self.new_trial_window, orient='vertical')
+        #Frame
+        self.fm_new_trial = tk.Frame(self.pw_new_trial, bd = 2 , relief = 'ridge', text='Information')
+        self.pw_new_trial.add (self.fm_new_trial)
     def AddCase(self):
         self.ProgressBarLength = get_progress_bar_length()
         if self.ProgressBarLength >=1:
