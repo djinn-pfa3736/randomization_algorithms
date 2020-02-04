@@ -276,7 +276,30 @@ class Application(tk.Frame):
                 
                 self.delete_all_tree ()
                 self.get_db_into_tree()
-                Application.ProgressBar()
+                ## NOTE Progress bar is showing by rewriti the code of Progress bar. 
+                self.ProgressBarLength = get_progress_bar_length()
+            
+                logging.info(msg="Progressbar"+str(self.ProgressBarLength))
+                self.s = ttk.Style()
+                self.s.theme_use('clam')
+                if self.ProgressBarLength<0.3:
+                    self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
+                elif (self.ProgressBarLength>= 0.3 and self.ProgressBarLength<0.6):
+                    self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
+                elif (self.ProgressBarLength>= 0.6 and self.ProgressBarLength<0.9):
+                    self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
+                elif (self.ProgressBarLength>= 0.9 and self.ProgressBarLength <1):
+                    self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
+                else:
+                    self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
+                # #Progressbar
+                self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=400 , mode='determinate', style= "Horizontal.TProgressbar")
+                self.prs_bar.configure( maximum = 1, value = self.ProgressBarLength)
+                self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky=(tk.N,tk.E,tk.S,tk.W))
+                
+                self.lb_header_max = tk.Label(self.fm_prs_bar)
+                self.lb_header_max ["text"]= str(Number)
+                self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
             else:
                 return
             
