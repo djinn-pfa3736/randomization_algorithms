@@ -247,63 +247,67 @@ class Application(tk.Frame):
 
     # Def
     def AddCase(self):
-        
-        #* Get text "self,HospitalName=None, HospitalID=None, PatientName = None"
-        
-        self.txt_HospitalName= self.spbox_in.get()
-        self.txt_HospitalID= self.en_inid.get()
-        self.txt_PatientName= self.en_name.get()
-        print(self.txt_PatientName)
-        logging.info(msg = 'Get value from entrybox')
-        
-        if (not self.txt_HospitalName or not self.txt_HospitalID or not self.txt_PatientName):
-            self.mes_blank = messagebox.showwarning("Warning", "Please fill Institution, ID, and Name.")
-            print(self.mes_blank)
-            
+        self.ProgressBarLength = get_progress_bar_length()
+        if self.ProgressBarLength >=1:
+            self.mes_warning_number = messagebox.showwarning("Warning", "The enrollment is now over." )
             return
         else:
-       
-            #Message box
-            self.mes_add_confirmation = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
-                                                This operation cannot be undone.", icon='warning')
-            print(self.mes_add_confirmation)
-            if self.mes_add_confirmation == 'yes':
-                dm.add_case(HospitalName=self.txt_HospitalName, HospitalID=self.txt_HospitalID, PatientName=self.txt_PatientName)
-                #dm.print_db()
-                self.mes_success = messagebox.showinfo(
-                    "Info", "New case is now added and assined, successfully.")
-                print("showinfo", self.mes_success)
-                
-                self.delete_all_tree ()
-                self.get_db_into_tree()
-                ## NOTE Progress bar is showing by rewriti the code of Progress bar. 
-                self.ProgressBarLength = get_progress_bar_length()
+            #* Get text "self,HospitalName=None, HospitalID=None, PatientName = None"
             
-                logging.info(msg="Progressbar"+str(self.ProgressBarLength))
-                self.s = ttk.Style()
-                self.s.theme_use('clam')
-                if self.ProgressBarLength<0.3:
-                    self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
-                elif (self.ProgressBarLength>= 0.3 and self.ProgressBarLength<0.6):
-                    self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
-                elif (self.ProgressBarLength>= 0.6 and self.ProgressBarLength<0.9):
-                    self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
-                elif (self.ProgressBarLength>= 0.9 and self.ProgressBarLength <1):
-                    self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
-                else:
-                    self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
-                # #Progressbar
-                self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=400 , mode='determinate', style= "Horizontal.TProgressbar")
-                self.prs_bar.configure( maximum = 1, value = self.ProgressBarLength)
-                self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky=(tk.N,tk.E,tk.S,tk.W))
+            self.txt_HospitalName= self.spbox_in.get()
+            self.txt_HospitalID= self.en_inid.get()
+            self.txt_PatientName= self.en_name.get()
+            print(self.txt_PatientName)
+            logging.info(msg = 'Get value from entrybox')
+            
+            if (not self.txt_HospitalName or not self.txt_HospitalID or not self.txt_PatientName):
+                self.mes_blank = messagebox.showwarning("Warning", "Please fill Institution, ID, and Name.")
+                print(self.mes_blank)
                 
-                self.lb_header_max = tk.Label(self.fm_prs_bar)
-                self.lb_header_max ["text"]= str(Number)
-                self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
-            else:
                 return
-            
-        logging.info(msg='Add data base from GUI')
+            else:
+        
+                #Message box
+                self.mes_add_confirmation = messagebox.askquestion("Confirmation", "Do you want to enroll a new case?\
+                                                    This operation cannot be undone.", icon='warning')
+                print(self.mes_add_confirmation)
+                if self.mes_add_confirmation == 'yes':
+                    dm.add_case(HospitalName=self.txt_HospitalName, HospitalID=self.txt_HospitalID, PatientName=self.txt_PatientName)
+                    #dm.print_db()
+                    self.mes_success = messagebox.showinfo(
+                        "Info", "New case is now added and assined, successfully.")
+                    print("showinfo", self.mes_success)
+                    
+                    self.delete_all_tree ()
+                    self.get_db_into_tree()
+                    ## NOTE Progress bar is showing by rewriti the code of Progress bar. 
+                    self.ProgressBarLength = get_progress_bar_length()
+                
+                    logging.info(msg="Progressbar"+str(self.ProgressBarLength))
+                    self.s = ttk.Style()
+                    self.s.theme_use('clam')
+                    if self.ProgressBarLength<0.3:
+                        self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
+                    elif (self.ProgressBarLength>= 0.3 and self.ProgressBarLength<0.6):
+                        self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
+                    elif (self.ProgressBarLength>= 0.6 and self.ProgressBarLength<0.9):
+                        self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
+                    elif (self.ProgressBarLength>= 0.9 and self.ProgressBarLength <1):
+                        self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
+                    else:
+                        self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
+                    # #Progressbar
+                    self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=400 , mode='determinate', style= "Horizontal.TProgressbar")
+                    self.prs_bar.configure( maximum = 1, value = self.ProgressBarLength)
+                    self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky=(tk.N,tk.E,tk.S,tk.W))
+                    
+                    self.lb_header_max = tk.Label(self.fm_prs_bar)
+                    self.lb_header_max ["text"]= str(Number)
+                    self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
+                else:
+                    return
+                
+            logging.info(msg='Add data base from GUI')
 
     def Export(self): 
         logging.info(msg='Launch Export from GUI')
