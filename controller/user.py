@@ -150,17 +150,19 @@ class Application(tk.Frame):
         
         #TODO Making def progress bar
         def ProgressBar(self):
+            
             self.ProgressBarLength = get_progress_bar_length()
+            
             logging.info(msg="Progressbar"+str(self.ProgressBarLength))
             self.s = ttk.Style()
             self.s.theme_use('clam')
             if self.ProgressBarLength<0.3:
                 self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
-            elif (self.ProgressBarLength>= 0.3 and ProgressBarLength<0.6):
+            elif (self.ProgressBarLength>= 0.3 and self.ProgressBarLength<0.6):
                 self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
-            elif (self.ProgressBarLength>= 0.6 and ProgressBarLength<0.9):
+            elif (self.ProgressBarLength>= 0.6 and self.ProgressBarLength<0.9):
                 self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
-            elif (self.ProgressBarLength>= 0.9 and ProgressBarLength <1):
+            elif (self.ProgressBarLength>= 0.9 and self.ProgressBarLength <1):
                 self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
             else:
                 self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
@@ -274,7 +276,7 @@ class Application(tk.Frame):
                 
                 self.delete_all_tree ()
                 self.get_db_into_tree()
-                self.ProgressBar(self)
+                Application.ProgressBar()
             else:
                 return
             
