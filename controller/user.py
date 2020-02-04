@@ -119,13 +119,12 @@ class Application(tk.Frame):
         self.lb_header_zero.grid(row= 0, column= 0, padx= 2, pady = 2, sticky =tk.W + tk.E)
         #Widgets
         ## Menubar
-
         self.menu_bar = tk.Menu(self) # Menuクラスからmenu_barインスタンスを生成
         root.config(menu=self.menu_bar) # メニューバーの配置
 
         self.file_menu = tk.Menu(self.menu_bar) # メニューバーに大項目「ファイル」を生成
         self.menu_bar.add_cascade(label="File", menu=self.file_menu) # 大項目「ファイル」を配置
-        self.file_menu.add_command(label="New") # 大項目「ファイル」に小項目「新規作成」を追加
+        self.file_menu.add_command(label="New",command = self.MenuPreference) 
         self.file_menu.add_command(label="Open") # 大項目「ファイル」に小項目「開く」を追加
         self.file_menu.add_separator() # セパレーターを追加
         self.file_menu.add_command(label="Quit") #
@@ -222,6 +221,9 @@ class Application(tk.Frame):
 
 
     # Definitions
+    def MenuPreference(self):
+        tk.Toplevel(master=root)
+        
     def AddCase(self):
         self.ProgressBarLength = get_progress_bar_length()
         if self.ProgressBarLength >=1:
