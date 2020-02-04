@@ -31,10 +31,14 @@ class DataManager(object):
         patient_name TEXT, assign TEXT, exclusion INTEGER)")
         
     def connect(self):
-        self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
-        AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id TEXT,\
-        patient_name TEXT, assign TEXT, exclusion INTEGER)")
+        dm=DataManager()
+        # self.conn = sqlite3.connect("../data/patient.db")
+        # self.cursor = self.conn.cursor()
+        # self.randomization = randomization.Randomize()
+        # self.cursor.execute(
+        #     "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
+        # AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id TEXT,\
+        # patient_name TEXT, assign TEXT, exclusion INTEGER)")
 
         logging.info(msg='Connecting with patient.db')
 
@@ -59,8 +63,8 @@ class DataManager(object):
 
     def print_db(self):
         logging.info(msg='Showing cases from the instance')
-        # self.conn = sqlite3.connect("../data/patient.db")
-        # self.cursor = self.conn.cursor()
+        self.conn = sqlite3.connect("../data/patient.db")
+        self.cursor = self.conn.cursor()
 
         self.cursor.execute('SELECT * FROM assignment ORDER BY id ASC')
         for rows in self.cursor.fetchall():
@@ -71,7 +75,9 @@ class DataManager(object):
         self.cursor.execute('SELECT count(*) FROM assignment')
         self.result = self.cursor.fetchall()
         return(self.result[0][0])
-
+    
+    def remove_sqlite_file(self):
+        os.remove("../data/patient.db")
    
     def __del__(self):
         # conn = sqlite3.connect("../data/patient.db")
@@ -80,7 +86,8 @@ class DataManager(object):
 
 
 if __name__ == '__main__':
-    dm=DataManager()
-    result=dm.get_row_number()
-    print(result)
-    print(type(result))
+    dm =DataManager()
+    dm.remove_sqlite_file()
+    dm.connect()
+    dm.print_db()
+ 

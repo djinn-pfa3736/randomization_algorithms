@@ -10,7 +10,7 @@ from tkinter import filedialog
 import tkinter.ttk as ttk
 from tkinter import messagebox
 import sqlite3
-from tkinter import ttk as ttk
+import preference
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
 logging.basicConfig(level=logging.INFO, format=formatter)
@@ -292,7 +292,9 @@ class Application(tk.Frame):
         self.dirpath=filedialog.asksaveasfilename(filetypes=fTyp)
         dm.get_db_for_csv(dirpath_csv=self.dirpath)
         logging.info(msg='Export output.csv from GUI')
-            
+
+
+
 root = tk.Tk()
 app = Application(master=root)
 app.mainloop()
