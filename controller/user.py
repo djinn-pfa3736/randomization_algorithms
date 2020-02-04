@@ -11,7 +11,6 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 import sqlite3
 from tkinter import ttk as ttk
-
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
 logging.basicConfig(level=logging.INFO, format=formatter)
@@ -45,12 +44,6 @@ def get_progress_bar_length():
         return(1)
     else:
         return(NCase/Number)
-# if Number >= 400:
-#     PrsLength = 400
-# elif Number<=200:
-#     PrsLength = 200
-# else:
-#     PrsLength = Number
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -124,31 +117,19 @@ class Application(tk.Frame):
         self.lb_header_zero = tk.Label(self.fm_prs_bar)
         self.lb_header_zero ["text"]= "0"
         self.lb_header_zero.grid(row= 0, column= 0, padx= 2, pady = 2, sticky =tk.W + tk.E)
+        #Widgets
+        ## Menubar
+
+        self.menu_bar = tk.Menu(self) # Menuクラスからmenu_barインスタンスを生成
+        root.config(menu=self.menu_bar) # メニューバーの配置
+
+        self.file_menu = tk.Menu(self.menu_bar) # メニューバーに大項目「ファイル」を生成
+        self.menu_bar.add_cascade(label="File", menu=self.file_menu) # 大項目「ファイル」を配置
+        self.file_menu.add_command(label="New") # 大項目「ファイル」に小項目「新規作成」を追加
+        self.file_menu.add_command(label="Open") # 大項目「ファイル」に小項目「開く」を追加
+        self.file_menu.add_separator() # セパレーターを追加
+        self.file_menu.add_command(label="Quit") #
         
-        
-        #NOTE Progress bar original
-        # self.s = ttk.Style()
-        # self.s.theme_use('clam')
-        # if ProgressBarLength<0.3:
-        #     self.s.configure("Horizontal.TProgressbar", foreground='deeppink', background='deeppink')
-        # elif (ProgressBarLength>= 0.3 and ProgressBarLength<0.6):
-        #     self.s.configure("Horizontal.TProgressbar", foreground='gold', background='gold')
-        # elif (ProgressBarLength>= 0.6 and ProgressBarLength<0.9):
-        #     self.s.configure("Horizontal.TProgressbar", foreground='dodgerblue', background='dodgerblue')
-        # elif (ProgressBarLength>= 0.9 and ProgressBarLength <1):
-        #     self.s.configure("Horizontal.TProgressbar", foreground='royalblue', background='royalblue')
-        # else:
-        #     self.s.configure("Horizontal.TProgressbar", foreground='slategray', background='slategray')
-        # # #Progressbar
-        # self.prs_bar=ttk.Progressbar(self.fm_prs_bar, orient= 'horizontal', length=400 , mode='determinate', style= "Horizontal.TProgressbar")
-        # self.prs_bar.configure( maximum = 1, value = ProgressBarLength)
-        # self.prs_bar.grid(row= 1, column= 1, padx= 2, pady = 2, sticky=(tk.N,tk.E,tk.S,tk.W))
-        
-        # self.lb_header_max = tk.Label(self.fm_prs_bar)
-        # self.lb_header_max ["text"]= str(Number)
-        # self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
-        
-        #TODO Making def progress bar
         def ProgressBar(self):
             
             self.ProgressBarLength = get_progress_bar_length()
@@ -176,8 +157,9 @@ class Application(tk.Frame):
             self.lb_header_max.grid(row=0 , column= 2, padx= 2, pady = 2, sticky =tk.W + tk.E)
                 
         ProgressBar(self)
-        # Bt
-        # add case
+        
+        ## Bt
+        ### add case
         self.bt_add = tk.Button(self.fm_1)
         self.bt_add["text"] = "Add"
         self.bt_add.grid(row=1, column=3, padx=2, pady=2, sticky=tk.W+tk.E)
@@ -192,7 +174,7 @@ class Application(tk.Frame):
         self.lb_spbox_in.grid(row = 0, column = 0, padx = 2, pady =2)
         
         
-        # entrybox_institutionalid(inid)
+        ### entrybox_institutionalid(inid)
         self.en_inid = tk.Entry(self.fm_1, width = 10)
         self.en_inid.grid(row= 1, column= 1, padx= 2, pady = 2, sticky =tk.W+tk.E)
         self.en_inid.insert(tk.END, '00000')
@@ -200,7 +182,7 @@ class Application(tk.Frame):
         self.lb_en_inid["text"]= "ID"
         self.lb_en_inid.grid(row = 0, column = 1, padx = 2, pady =2)
         
-        # entrybox_name
+        ### entrybox_name
         self.en_name = tk.Entry(self.fm_1, width = 10)
         self.en_name.grid(row= 1, column= 2, padx= 2, pady = 2, sticky =tk.W+tk.E)
         self.en_name.insert(tk.END, 'Name')
@@ -208,7 +190,7 @@ class Application(tk.Frame):
         self.lb_en_name["text"]= "Name"
         self.lb_en_name.grid(row = 0, column = 2, padx = 2, pady =2)
         
-        # export
+        ### export
         self.bt_export = tk.Button(self.fm_2)
         self.bt_export["text"] = "Export"
         self.bt_export.grid(row=2, column=0, padx=2, pady=2, sticky=tk.W+tk.E)
@@ -237,15 +219,9 @@ class Application(tk.Frame):
         
         self.get_db_into_tree()
 
-        # self.Conn = sqlite3.connect("../data/patient.db")
-        # logging.info(msg='Connecting with patient.db')
-        # #Sql query
-        # self.sql = 'SELECT * FROM assignment ORDER BY id DESC'
-        # for rows in self.Conn.execute(self.sql):
-        #     self.tree.insert("","end",values= rows)
-        # self.Conn.close()
 
-    # Def
+
+    # Definitions
     def AddCase(self):
         self.ProgressBarLength = get_progress_bar_length()
         if self.ProgressBarLength >=1:
