@@ -48,6 +48,7 @@ def get_progress_bar_length():
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
+        #Definition of variales
         master.title(Rondomization)
         master.geometry("500x600")
         self.pack()
@@ -67,7 +68,8 @@ class Application(tk.Frame):
         for row in self.tree.get_children():
                 self.tree.delete(row)
     def create_widgets(self):
-        # Pane
+        
+        # ANCHOR pane and frames
         self.pw_main = tk.PanedWindow(self.master, orient='vertical')
         
         self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
@@ -77,10 +79,8 @@ class Application(tk.Frame):
         self.pw_main.add(self.pw_prs_bar)
         self.pw_1 = tk.PanedWindow(self.pw_main, bg="grey", orient='vertical')
         self.pw_main.add(self.pw_1)
-        self.pw_2 = tk.PanedWindow(
-            self.pw_main, bg="grey", orient='vertical')
+        self.pw_2 = tk.PanedWindow(self.pw_main, bg="grey", orient='vertical')
         self.pw_main.add(self.pw_2)
-        
         
         # Frame
         # fm_header containing study info
@@ -99,7 +99,6 @@ class Application(tk.Frame):
         self.fm_3.propagate(True)
         self.pw_2.add(self.fm_3)
         
-    
         #Header
         self.lb_header_trial = tk.Label(self.fm_header)
         self.lb_header_trial ["text"]= "Trial: "+Trial
@@ -219,15 +218,66 @@ class Application(tk.Frame):
         self.get_db_into_tree()
 
 
-    #TODO 
+    #TODO  making manu new trial
     # Definitions
     def MenuPreference(self):
-        self.new_trial_window = tk.Toplevel(master=root)
+        self.new_trial_window = tk.Toplevel(master=self.master)
         self.new_trial_window.title("New trial")
-        self.pw_new_trial = tk.PanedWindow(self.new_trial_window, orient='vertical')
+        self.new_trial_window.geometry("380x160")
+        
+        self.pw_new_trial = tk.PanedWindow(self.new_trial_window, bg = "grey", orient = 'vertical')
+        self.pw_new_trial.pack(expand=True, fill=tk.BOTH)
+        
         #Frame
-        self.fm_new_trial = tk.Frame(self.pw_new_trial, bd = 2 , relief = 'ridge', text='Information')
+        self.fm_new_trial = tk.Frame(self.pw_new_trial, bd = 2 , relief = 'flat')
         self.pw_new_trial.add (self.fm_new_trial)
+        #Label
+        self.lb_trial = tk.Label(self.fm_new_trial)
+        self.lb_trial["text"]="Trial"
+        self.lb_trial.grid(row=0 , column= 0, padx= 2, pady = 2, sticky =tk.E)
+        self.lb_groupa = tk.Label(self.fm_new_trial)
+        self.lb_groupa["text"]="Group A"
+        self.lb_groupa.grid(row=1 , column= 0, padx= 2, pady = 2, sticky =tk.E)
+        self.lb_groupb = tk.Label(self.fm_new_trial)
+        self.lb_groupb["text"]="Group B"
+        self.lb_groupb.grid(row=2 , column= 0, padx= 2, pady = 2, sticky =tk.E)
+        self.lb_samplesize = tk.Label(self.fm_new_trial)
+        self.lb_samplesize["text"]="Sample size (≥ 6)"
+        self.lb_samplesize.grid(row=3 , column= 0, padx= 2, pady = 2, sticky =tk.E)
+        #Entry box
+        self.en_trial = tk.Entry(self.fm_new_trial, width = 15)
+        self.en_trial.grid(row= 0, column= 1, padx= 2, pady = 2, sticky =tk.W)
+        self.en_trial.insert(tk.END, 'Trial Name')
+        
+        self.en_groupa = tk.Entry(self.fm_new_trial, width = 15)
+        self.en_groupa.grid(row= 1, column= 1, padx= 2, pady = 2, sticky =tk.W)
+        self.en_groupa.insert(tk.END, 'Control group')
+        
+        self.en_groupb = tk.Entry(self.fm_new_trial, width = 15)
+        self.en_groupb.grid(row= 2, column= 1, padx= 2, pady = 2, sticky =tk.W)
+        self.en_groupb.insert(tk.END, 'Treatment group')
+        
+        self.en_samplesize = tk.Entry(self.fm_new_trial, width = 15, textvariable = tk.IntVar(value = 100))
+        self.en_samplesize.grid(row= 3, column= 1, padx= 2, pady = 2, sticky =tk.W)
+        #TODO  Bt function
+        #bt
+        self.bt_save_new_trial  =tk.Button(self.fm_new_trial)
+        self.bt_save_new_trial["text"]='Save'
+        self.bt_save_new_trial.grid(row= 3, column= 2, padx= 2, pady = 2, sticky =tk.W)
+        self.bt_save_new_trial["command"]=self.SaveNewTrial
+        self.bt_cancel_new_trial  =tk.Button(self.fm_new_trial)
+        self.bt_cancel_new_trial["text"]='Cancel'
+        self.bt_cancel_new_trial["command"] = self.CancelNewTrial
+        self.bt_cancel_new_trial.grid(row= 3, column= 3, padx= 2, pady = 2, sticky =tk.W)
+    def SaveNewTrial (self):
+        self.txt_new_trial_name = self.en_trial.get
+        self.txt_groupa=self.en_groupa.get
+        self.txt_groupb=self.en_groupb.get
+        logging.info(msg= "The data is now gotten!")
+        with open (../data/"study_data.json","w")
+        logging.info(msg= "Open JSON")
+    def CancelNewTrial (self):
+        self.new_trial_window.destroy()
     def AddCase(self):
         self.ProgressBarLength = get_progress_bar_length()
         if self.ProgressBarLength >=1:
@@ -262,6 +312,7 @@ class Application(tk.Frame):
                     
                     self.delete_all_tree ()
                     self.get_db_into_tree()
+                    
                     ## NOTE Progress bar is showing by rewriti the code of Progress bar. 
                     self.ProgressBarLength = get_progress_bar_length()
                 
