@@ -19,12 +19,11 @@ class Preference(tk.Frame):
         self.lb_groupa["text"]="Group A"
         self.lb_groupa.grid(row=0 , column= 0, padx= 2, pady = 2, sticky =tk.W + tk.E)
         self.lb_groupb = tk.Label(self.fm)
-        
+
         self.lb_groupb["text"]="Group B"
         self.lb_groupb.grid(row=1 , column= 0, padx= 2, pady = 2, sticky =tk.W + tk.E)
-        
+
 if __name__ == '__main__':
     root = tk.Tk()
     preference = Preference(master=root)
     preference.mainloop()
-    

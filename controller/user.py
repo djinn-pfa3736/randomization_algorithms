@@ -13,8 +13,10 @@ from tkinter import messagebox
 import sqlite3
 import preference
 import json
-
-# import pdb
+import shlex
+import shutil
+import subprocess
+import datetime
 
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
@@ -36,7 +38,7 @@ json_dict = json_manager.get_json_object()
 
 # Data from Json
 Contact = json_dict['study_preferences']['contact']
-Number = json_dict['study_preferences']['number']
+Number = int(json_dict['study_preferences']['number'])
 Rondomization = json_dict['study_preferences']['randomization']
 PI = json_dict['study_preferences']['principal investigator']
 Trial = json_dict['study_preferences']['trial']
@@ -247,7 +249,7 @@ class Application(tk.Frame):
     def MenuPreference(self):
         self.new_trial_window = tk.Toplevel(master=self.master)
         self.new_trial_window.title("New trial Setup")
-        self.new_trial_window.geometry("450x280")
+        self.new_trial_window.geometry("450x350")
 
         self.pw_new_trial = tk.PanedWindow(
             self.new_trial_window, bg="grey", orient='vertical')
@@ -256,22 +258,36 @@ class Application(tk.Frame):
         # Frame
         self.fm_new_trial = tk.Frame(self.pw_new_trial, bd=2)
         self.pw_new_trial.add(self.fm_new_trial)
+
         # Label
         self.lb_trial = tk.Label(self.fm_new_trial)
         self.lb_trial["text"] = "Trial"
         self.lb_trial.grid(row=0, column=0, padx=2, pady=2, sticky=tk.E)
+
+        self.lb_pi = tk.Label(self.fm_new_trial)
+        self.lb_pi["text"] = "Primary Investigator"
+        self.lb_pi.grid(row=1, column=0, padx=2, pady=2, sticky=tk.E)
+
+        self.lb_contact = tk.Label(self.fm_new_trial)
+        self.lb_contact["text"] = "Contact"
+        self.lb_contact.grid(row=2, column=0, padx=2, pady=2, sticky=tk.E)
+
+
         self.lb_groupa = tk.Label(self.fm_new_trial)
         self.lb_groupa["text"] = "Group A"
-        self.lb_groupa.grid(row=1, column=0, padx=2, pady=2, sticky=tk.E)
+        self.lb_groupa.grid(row=3, column=0, padx=2, pady=2, sticky=tk.E)
+
         self.lb_groupb = tk.Label(self.fm_new_trial)
         self.lb_groupb["text"] = "Group B"
-        self.lb_groupb.grid(row=2, column=0, padx=2, pady=2, sticky=tk.E)
+        self.lb_groupb.grid(row=4, column=0, padx=2, pady=2, sticky=tk.E)
+
         self.lb_samplesize = tk.Label(self.fm_new_trial)
         self.lb_samplesize["text"] = "Sample size (> 5)"
-        self.lb_samplesize.grid(row=3, column=0, padx=2, pady=2, sticky=tk.E)
+        self.lb_samplesize.grid(row=5, column=0, padx=2, pady=2, sticky=tk.E)
+
         self.lb_list_box = tk.Label(self.fm_new_trial)
         self.lb_list_box["text"] = 'Institution'
-        self.lb_list_box.grid(row=4, column=0, padx=2, pady=2, sticky=tk.E)
+        self.lb_list_box.grid(row=6, column=0, padx=2, pady=2, sticky=tk.E)
 
         # TODO  Making list box
         # list box
@@ -280,22 +296,22 @@ class Application(tk.Frame):
         self.lsbx_in = tk.Listbox(
             self.fm_new_trial, listvariable=self.txt, width=15, height=5)
 
-        self.lsbx_in.grid(row=4, column=1, padx=2, pady=2, sticky=tk.W)
+        self.lsbx_in.grid(row=6, column=1, padx=2, pady=2, sticky=tk.W)
 
         # Entory box for list box
         self.en_in_plus = tk.Entry(self.fm_new_trial, width = 15)
-        self.en_in_plus.grid(row=5, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_in_plus.grid(row=7, column=1, padx=2, pady=2, sticky=tk.W)
 
         # Bt for list box
         ## Add
         self.bt_add_in = tk.Button(self.fm_new_trial, command=self.AddInstitute)
         self.bt_add_in["text"] = "Add Institution"
-        self.bt_add_in.grid(row=5, column=3, padx=2, pady=2, sticky=tk.W)
+        self.bt_add_in.grid(row=7, column=3, padx=2, pady=2, sticky=tk.W)
 
         ## Delete
         self.bt_delete_in = tk.Button(self.fm_new_trial, command=self.DeleteInstitute)
         self.bt_delete_in["text"] = "Delete Institution"
-        self.bt_delete_in.grid(row=4, column=3, padx=2, pady=2, sticky=tk.W+tk.S)
+        self.bt_delete_in.grid(row=6, column=3, padx=2, pady=2, sticky=tk.W+tk.S)
 
         ##
         # Entry box
@@ -303,29 +319,36 @@ class Application(tk.Frame):
         self.en_trial.grid(row=0, column=1, padx=2, pady=2, sticky=tk.W)
         self.en_trial.insert(tk.END, 'Trial Name')
 
+        self.en_pi = tk.Entry(self.fm_new_trial, width=15)
+        self.en_pi.grid(row=1, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_pi.insert(tk.END, 'Name')
+
+        self.en_contact = tk.Entry(self.fm_new_trial, width=15)
+        self.en_contact.grid(row=2, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_contact.insert(tk.END, 'Contact')
+
         self.en_groupa = tk.Entry(self.fm_new_trial, width=15)
-        self.en_groupa.grid(row=1, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_groupa.grid(row=3, column=1, padx=2, pady=2, sticky=tk.W)
         self.en_groupa.insert(tk.END, 'Control group')
 
         self.en_groupb = tk.Entry(self.fm_new_trial, width=15)
-        self.en_groupb.grid(row=2, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_groupb.grid(row=4, column=1, padx=2, pady=2, sticky=tk.W)
         self.en_groupb.insert(tk.END, 'Treatment group')
 
         self.en_samplesize = tk.Entry(
             self.fm_new_trial, width=15, textvariable=tk.IntVar(value=100))
-        self.en_samplesize.grid(row=3, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_samplesize.grid(row=5, column=1, padx=2, pady=2, sticky=tk.W)
 
         # bt
-        self.bt_save_new_trial = tk.Button(self.fm_new_trial)
+        self.bt_save_new_trial = tk.Button(self.fm_new_trial, command=self.SaveNewTrial)
         self.bt_save_new_trial["text"] = 'Save New Trial'
         self.bt_save_new_trial.grid(
-            row=6, column=3, padx=2, pady=2, sticky=tk.W)
-        self.bt_save_new_trial["command"] = self.SaveNewTrial
+            row=8, column=3, padx=2, pady=2, sticky=tk.W)
         self.bt_cancel_new_trial = tk.Button(self.fm_new_trial)
         self.bt_cancel_new_trial["text"] = 'Cancel'
         self.bt_cancel_new_trial["command"] = self.CancelNewTrial
         self.bt_cancel_new_trial.grid(
-            row=6, column=4, padx=2, pady=2, sticky=tk.W)
+            row=8, column=4, padx=2, pady=2, sticky=tk.W)
 
     def AddInstitute(self):
         new_institute = self.en_in_plus.get()
@@ -337,14 +360,37 @@ class Application(tk.Frame):
         self.lsbx_in.delete(selected_idx[0])
 
     def SaveNewTrial(self):
-        self.txt_new_trial_name = self.en_trial.get
-        self.txt_groupa = self.en_groupa.get
-        self.txt_groupb = self.en_groupb.get
+        self.txt_new_trial_name = self.en_trial.get()
+        self.txt_new_pi = self.en_pi.get()
+        self.txt_new_contact = self.en_contact.get()
+        self.txt_groupa = self.en_groupa.get()
+        self.txt_groupb = self.en_groupb.get()
         logging.info(msg="The data is now gotten!")
 
-        # with open ('../data/study_data.json',"w") as self.f:
-        #logging.info(msg= "Open JSON")
-        #json.dump ()
+        ret = messagebox.askyesno('Confirm', 'Are you sure about deleting current project and create new one?')
+        if ret == True:
+
+            arg0 = '../data/study_data.json_' + datetime.datetime.now().strftime("%Y-%m-%d")
+            arg1 = '../data/patient.pd_' + datetime.datetime.now().strftime("%Y-%m-%d")
+
+            # print(arg)
+            shutil.copy('../data/study_data.json', arg0)
+            shutil.copy('../data/patient.db', arg1)
+            os.remove('../data/patient.db')
+            subprocess.call(shlex.split("touch ../data/patient.db"))
+
+            with open('../data/study_data.json',"w") as self.f:
+                dict = {"study_groups": {"GroupA": self.en_groupa.get(), "GroupB": self.en_groupb.get()},
+                        "study_preferences": {"trial": self.en_trial.get(),
+                        "principal investigator": self.en_pi.get(),
+                        "contact": self.en_contact.get(),
+                        "number": self.en_samplesize.get(),
+                        "randomization": "Simple randomization",
+                        "institution": self.lsbx_in.get(0, tk.END)}}
+                print(dict)
+                json.dump(dict, self.f)
+            self.new_trial_window.destroy()
+            
     def CancelNewTrial(self):
         self.new_trial_window.destroy()
 
