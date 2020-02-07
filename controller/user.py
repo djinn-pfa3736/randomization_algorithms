@@ -14,6 +14,8 @@ import sqlite3
 import preference
 import json
 
+# import pdb
+
 # Logging handlar
 formatter = '%(levelname)s : %(asctime)s :%(message)s'
 logging.basicConfig(level=logging.INFO, format=formatter)
@@ -137,8 +139,8 @@ class Application(tk.Frame):
         self.file_menu = tk.Menu(self.menu_bar)  # メニューバーに大項目「ファイル」を生成
         self.menu_bar.add_cascade(
             label="File", menu=self.file_menu)  # 大項目「ファイル」を配置
-        self.file_menu.add_command(label="New", command=self.MenuPreference)
-        self.file_menu.add_command(label="Open")  # 大項目「ファイル」に小項目「開く」を追加
+        self.file_menu.add_command(label="Create New Trial", command=self.MenuPreference)
+        self.file_menu.add_command(label="Open Trial")  # 大項目「ファイル」に小項目「開く」を追加
         self.file_menu.add_separator()  # セパレーターを追加
         self.file_menu.add_command(label="Quit")
 
@@ -244,8 +246,8 @@ class Application(tk.Frame):
 
     def MenuPreference(self):
         self.new_trial_window = tk.Toplevel(master=self.master)
-        self.new_trial_window.title("New trial")
-        self.new_trial_window.geometry("400x300")
+        self.new_trial_window.title("New trial Setup")
+        self.new_trial_window.geometry("450x280")
 
         self.pw_new_trial = tk.PanedWindow(
             self.new_trial_window, bg="grey", orient='vertical')
@@ -265,7 +267,7 @@ class Application(tk.Frame):
         self.lb_groupb["text"] = "Group B"
         self.lb_groupb.grid(row=2, column=0, padx=2, pady=2, sticky=tk.E)
         self.lb_samplesize = tk.Label(self.fm_new_trial)
-        self.lb_samplesize["text"] = "Sample size (≥ 6)"
+        self.lb_samplesize["text"] = "Sample size (> 5)"
         self.lb_samplesize.grid(row=3, column=0, padx=2, pady=2, sticky=tk.E)
         self.lb_list_box = tk.Label(self.fm_new_trial)
         self.lb_list_box["text"] = 'Institution'
@@ -277,24 +279,25 @@ class Application(tk.Frame):
         self.txt = tk.StringVar(value=self.sample_institution)
         self.lsbx_in = tk.Listbox(
             self.fm_new_trial, listvariable=self.txt, width=15, height=5)
+
         self.lsbx_in.grid(row=4, column=1, padx=2, pady=2, sticky=tk.W)
 
         # Entory box for list box
-        self.en_in_plus = tk.Entry(self.fm_new_trial,width = 15)
+        self.en_in_plus = tk.Entry(self.fm_new_trial, width = 15)
         self.en_in_plus.grid(row=5, column=1, padx=2, pady=2, sticky=tk.W)
-        
+
         # Bt for list box
         ## Add
-        self.bt_add_in = tk.Button(self.fm_new_trial)
-        self.bt_add_in["text"] = "Add"
+        self.bt_add_in = tk.Button(self.fm_new_trial, command=self.AddInstitute)
+        self.bt_add_in["text"] = "Add Institution"
         self.bt_add_in.grid(row=5, column=3, padx=2, pady=2, sticky=tk.W)
-        
+
         ## Delete
-        ## Add
-        self.bt_delete_in = tk.Button(self.fm_new_trial)
-        self.bt_delete_in["text"] = "Delete"
+        self.bt_delete_in = tk.Button(self.fm_new_trial, command=self.DeleteInstitute)
+        self.bt_delete_in["text"] = "Delete Institution"
         self.bt_delete_in.grid(row=4, column=3, padx=2, pady=2, sticky=tk.W+tk.S)
-        ## 
+
+        ##
         # Entry box
         self.en_trial = tk.Entry(self.fm_new_trial, width=15)
         self.en_trial.grid(row=0, column=1, padx=2, pady=2, sticky=tk.W)
@@ -311,10 +314,10 @@ class Application(tk.Frame):
         self.en_samplesize = tk.Entry(
             self.fm_new_trial, width=15, textvariable=tk.IntVar(value=100))
         self.en_samplesize.grid(row=3, column=1, padx=2, pady=2, sticky=tk.W)
-        
+
         # bt
         self.bt_save_new_trial = tk.Button(self.fm_new_trial)
-        self.bt_save_new_trial["text"] = 'Save'
+        self.bt_save_new_trial["text"] = 'Save New Trial'
         self.bt_save_new_trial.grid(
             row=6, column=3, padx=2, pady=2, sticky=tk.W)
         self.bt_save_new_trial["command"] = self.SaveNewTrial
@@ -323,6 +326,15 @@ class Application(tk.Frame):
         self.bt_cancel_new_trial["command"] = self.CancelNewTrial
         self.bt_cancel_new_trial.grid(
             row=6, column=4, padx=2, pady=2, sticky=tk.W)
+
+    def AddInstitute(self):
+        new_institute = self.en_in_plus.get()
+        self.lsbx_in.insert(0, new_institute)
+
+    def DeleteInstitute(self):
+        selected_idx = self.lsbx_in.curselection()
+        # print(selected_idx)
+        self.lsbx_in.delete(selected_idx[0])
 
     def SaveNewTrial(self):
         self.txt_new_trial_name = self.en_trial.get
