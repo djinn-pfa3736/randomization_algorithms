@@ -54,7 +54,6 @@ def get_progress_bar_length():
     else:
         return(NCase/Number)
 
-
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -65,7 +64,10 @@ class Application(tk.Frame):
         self.create_widgets()
     # * Basic function
     # * Get  database into tree view
-
+        if os.path.exists ("../data/patient.db") == False:
+            dm.connect()
+        else:
+            pass
     def get_db_into_tree(self):
         self.Conn = sqlite3.connect("../data/patient.db")
         logging.info(msg='Connecting with patient.db')
@@ -481,4 +483,5 @@ class Application(tk.Frame):
 
 root = tk.Tk()
 app = Application(master=root)
+
 app.mainloop()
