@@ -29,7 +29,7 @@ class DataManager(object):
             "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
         AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id TEXT,\
         patient_name TEXT, assign TEXT, exclusion INTEGER)")
-        
+
     def connect(self):
         dm=DataManager()
         # self.conn = sqlite3.connect("../data/patient.db")
@@ -42,6 +42,15 @@ class DataManager(object):
 
         logging.info(msg='Connecting with patient.db')
 
+    def reconnect(self):
+        self.conn = sqlite3.connect("../data/patient.db")
+        self.cursor = self.conn.cursor()
+        self.cursor.execute(
+            "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
+            AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id TEXT,\
+            patient_name TEXT, assign TEXT, exclusion INTEGER)")
+
+        # pdb.set_trace()
 
     def add_case(self,HospitalName=None, HospitalID=None, PatientName = None):
         # Get assigned_group
@@ -70,15 +79,19 @@ class DataManager(object):
         for rows in self.cursor.fetchall():
             print(rows)
         logging.info(msg='Print database')
-    
+
     def get_row_number(self):
         self.cursor.execute('SELECT count(*) FROM assignment')
         self.result = self.cursor.fetchall()
         return(self.result[0][0])
-    
+
     def remove_sqlite_file(self):
         os.remove("../data/patient.db")
-   
+
+    def close(self):
+        self.conn.close()
+        logging.info(msg='Disconnecting database')
+
     def __del__(self):
         # conn = sqlite3.connect("../data/patient.db")
         self.conn.close()
@@ -90,4 +103,3 @@ if __name__ == '__main__':
     dm.remove_sqlite_file()
     dm.connect()
     dm.print_db()
- 

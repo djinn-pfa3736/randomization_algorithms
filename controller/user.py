@@ -373,7 +373,7 @@ class Application(tk.Frame):
         if ret == True:
 
             arg0 = '../data/study_data.json_' + datetime.datetime.now().strftime("%Y-%m-%d")
-            arg1 = '../data/patient.pd_' + datetime.datetime.now().strftime("%Y-%m-%d")
+            arg1 = '../data/patient.db_' + datetime.datetime.now().strftime("%Y-%m-%d")
 
             # print(arg)
             shutil.copy('../data/study_data.json', arg0)
@@ -392,7 +392,23 @@ class Application(tk.Frame):
                 print(dict)
                 json.dump(dict, self.f)
             self.new_trial_window.destroy()
-            
+
+            json_dict = json_manager.get_json_object()
+
+            # Data from Json
+            Contact = json_dict['study_preferences']['contact']
+            Number = int(json_dict['study_preferences']['number'])
+            Rondomization = json_dict['study_preferences']['randomization']
+            PI = json_dict['study_preferences']['principal investigator']
+            Trial = json_dict['study_preferences']['trial']
+            Institution = json_dict['study_preferences']['institution']
+
+            self.List_in = Institution
+            self.spbox_in["value"] = self.List_in
+
+            self.delete_all_tree()
+            dm.reconnect()
+
     def CancelNewTrial(self):
         self.new_trial_window.destroy()
 
