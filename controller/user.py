@@ -372,14 +372,14 @@ class Application(tk.Frame):
         ret = messagebox.askyesno('Confirm', 'Are you sure about deleting current project and create new one?')
         if ret == True:
 
-            arg0 = '../data/study_data.json_' + datetime.datetime.now().strftime("%Y-%m-%d")
-            arg1 = '../data/patient.db_' + datetime.datetime.now().strftime("%Y-%m-%d")
+            # arg0 = '../data/study_data.json_' + datetime.datetime.now().strftime("%Y-%m-%d")
+            # arg1 = '../data/patient.db_' + datetime.datetime.now().strftime("%Y-%m-%d")
 
-            # print(arg)
-            shutil.copy('../data/study_data.json', arg0)
-            shutil.copy('../data/patient.db', arg1)
-            os.remove('../data/patient.db')
-            subprocess.call(shlex.split("touch ../data/patient.db"))
+            # # print(arg)
+            # shutil.copy('../data/study_data.json', arg0)
+            # shutil.copy('../data/patient.db', arg1)
+            # os.remove('../data/patient.db')
+            # subprocess.call(shlex.split("touch ../data/patient.db"))
 
             with open('../data/study_data.json',"w") as self.f:
                 dict = {"study_groups": {"GroupA": self.en_groupa.get(), "GroupB": self.en_groupb.get()},
