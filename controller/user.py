@@ -251,7 +251,7 @@ class Application(tk.Frame):
     def MenuPreference(self):
         self.new_trial_window = tk.Toplevel(master=self.master)
         self.new_trial_window.title("New trial Setup")
-        self.new_trial_window.geometry("450x350")
+        self.new_trial_window.geometry("500x350")
 
         self.pw_new_trial = tk.PanedWindow(
             self.new_trial_window, bg="grey", orient='vertical')
