@@ -62,6 +62,7 @@ class Application(tk.Frame):
         master.geometry("500x600")
         self.pack()
         self.create_widgets()
+        
     # * Basic function
     # * Get  database into tree view
         if os.path.exists ("../data/patient.db") == False:
@@ -76,15 +77,15 @@ class Application(tk.Frame):
         for rows in self.Conn.execute(self.sql):
             self.tree.insert("", "end", values=rows)
         self.Conn.close()
+        
     # * Delete all rows in tree view
-
     def delete_all_tree(self):
         for row in self.tree.get_children():
             self.tree.delete(row)
+            
 
     def create_widgets(self):
-
-        # ANCHOR pane and frames
+        
         self.pw_main = tk.PanedWindow(self.master, orient='vertical')
 
         self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
@@ -149,7 +150,6 @@ class Application(tk.Frame):
         self.file_menu.add_command(label="Quit")
 
         def ProgressBar(self):
-
             self.ProgressBarLength = get_progress_bar_length()
 
             logging.info(msg="Progressbar"+str(self.ProgressBarLength))
@@ -245,9 +245,7 @@ class Application(tk.Frame):
 
         self.get_db_into_tree()
 
-    # TODO  making manu new trial
     # Definitions
-
     def MenuPreference(self):
         self.new_trial_window = tk.Toplevel(master=self.master)
         self.new_trial_window.title("New trial Setup")
@@ -291,7 +289,6 @@ class Application(tk.Frame):
         self.lb_list_box["text"] = 'Institution'
         self.lb_list_box.grid(row=6, column=0, padx=2, pady=2, sticky=tk.E)
 
-        # TODO  Making list box
         # list box
         self.sample_institution = ['Hospital A', 'Hospital B', 'Hospital C']
         self.txt = tk.StringVar(value=self.sample_institution)
@@ -405,8 +402,22 @@ class Application(tk.Frame):
 
             self.List_in = Institution
             self.spbox_in["value"] = self.List_in
-
+            
+            #ANCHOR reopen_main_window
+            
             self.delete_all_tree()
+            logging.info(msg='do the create widgets')
+            self.lb_header_trial.grid_remove()
+            self.lb_header_trial = tk.Label(self.fm_header)
+            self.lb_header_trial["text"] = "Trial: "+Trial
+            self.lb_header_trial.grid(row=0, column=0, padx=2, pady=2, sticky=tk.W)
+
+            self.lb_header_n.grid_remove()
+            self.lb_header_n = tk.Label(self.fm_header)
+            self.lb_header_n["text"] = "Target sample size: " + str(Number)
+            self.lb_header_n.grid(row=1, column=0, padx=2, pady=2, sticky=tk.W)
+            
+            logging.info(msg='end the create widgets')
             dm.reconnect()
 
     def CancelNewTrial(self):
