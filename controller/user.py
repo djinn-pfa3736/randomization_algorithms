@@ -31,6 +31,7 @@ sys.path += [os.path.dirname('.')]
 # Import packages from model
 from model import data_manager, get_date, json_manager
 
+"""
 # Make instances
 dm = data_manager.DataManager()
 json_manager = json_manager.JsonManager()
@@ -39,30 +40,45 @@ json_dict = json_manager.get_json_object()
 # Data from Json
 Contact = json_dict['study_preferences']['contact']
 Number = int(json_dict['study_preferences']['number'])
-Rondomization = json_dict['study_preferences']['randomization']
+Randomization = json_dict['study_preferences']['randomization']
 PI = json_dict['study_preferences']['principal investigator']
 Trial = json_dict['study_preferences']['trial']
 Institution = json_dict['study_preferences']['institution']
+"""
 
 # Definition
-
-
+"""
 def get_progress_bar_length():
     NCase = dm.get_row_number()
     if NCase/Number > 1:
         return(1)
     else:
         return(NCase/Number)
+"""
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
+
         # Definition of variales
-        master.title(Rondomization)
+        self.dm = data_manager.DataManager()
+
+        self.json_manager = json_manager.JsonManager()
+        self.json_dict = self.json_manager.get_json_object()
+
+        # Data from Json
+        self.Contact = self.json_dict['study_preferences']['contact']
+        self.Number = int(self.json_dict['study_preferences']['number'])
+        self.Randomization = self.json_dict['study_preferences']['randomization']
+        self.PI = self.json_dict['study_preferences']['principal investigator']
+        self.Trial = self.json_dict['study_preferences']['trial']
+        self.Institution = self.json_dict['study_preferences']['institution']
+
+        master.title(self.Randomization)
         master.geometry("500x600")
         self.pack()
         self.create_widgets()
-        
+
     # * Basic function
     # * Get  database into tree view
         if os.path.exists ("../data/patient.db") == False:
@@ -77,15 +93,21 @@ class Application(tk.Frame):
         for rows in self.Conn.execute(self.sql):
             self.tree.insert("", "end", values=rows)
         self.Conn.close()
-        
+
     # * Delete all rows in tree view
     def delete_all_tree(self):
         for row in self.tree.get_children():
             self.tree.delete(row)
-            
+
+    def get_progress_bar_length(self):
+        NCase = self.dm.get_row_number()
+        if NCase/self.Number > 1:
+            return(1)
+        else:
+            return(NCase/self.Number)
 
     def create_widgets(self):
-        
+
         self.pw_main = tk.PanedWindow(self.master, orient='vertical')
 
         self.pw_main.pack(expand=True, fill=tk.BOTH, side="top")
@@ -120,7 +142,7 @@ class Application(tk.Frame):
 
         # Header
         self.lb_header_trial = tk.Label(self.fm_header)
-        self.lb_header_trial["text"] = "Trial: "+Trial
+        self.lb_header_trial["text"] = "Trial: " + self.Trial
         self.lb_header_trial.grid(row=0, column=0, padx=2, pady=2, sticky=tk.W)
 
         # self.lb_header_pi = tk.Label(self.fm_header)
@@ -128,7 +150,7 @@ class Application(tk.Frame):
         # self.lb_header_pi.grid(row= 1, column= 0, padx= 2, pady = 2, sticky =tk.W)
 
         self.lb_header_n = tk.Label(self.fm_header)
-        self.lb_header_n["text"] = "Target sample size: " + str(Number)
+        self.lb_header_n["text"] = "Target sample size: " + str(self.Number)
         self.lb_header_n.grid(row=1, column=0, padx=2, pady=2, sticky=tk.W)
 
         # Progress bar in fm_header
@@ -150,7 +172,7 @@ class Application(tk.Frame):
         self.file_menu.add_command(label="Quit")
 
         def ProgressBar(self):
-            self.ProgressBarLength = get_progress_bar_length()
+            self.ProgressBarLength = self.get_progress_bar_length()
 
             logging.info(msg="Progressbar"+str(self.ProgressBarLength))
             self.s = ttk.Style()
@@ -178,7 +200,7 @@ class Application(tk.Frame):
                               sticky=(tk.N, tk.E, tk.S, tk.W))
 
             self.lb_header_max = tk.Label(self.fm_prs_bar)
-            self.lb_header_max["text"] = str(Number)
+            self.lb_header_max["text"] = str(self.Number)
             self.lb_header_max.grid(
                 row=0, column=2, padx=2, pady=2, sticky=tk.W + tk.E)
 
@@ -192,7 +214,7 @@ class Application(tk.Frame):
         self.bt_add["command"] = self.AddCase
         # spinbox_institution
         self.sptxt = tk.StringVar()
-        self.List_in = Institution
+        self.List_in = self.Institution
         self.spbox_in = tk.Spinbox(
             self.fm_1, width=10, textvariable=self.sptxt, value=self.List_in)
         self.spbox_in.grid(row=1, column=0, padx=2, pady=2, sticky=tk.W+tk.E)
@@ -272,22 +294,25 @@ class Application(tk.Frame):
         self.lb_contact["text"] = "Contact"
         self.lb_contact.grid(row=2, column=0, padx=2, pady=2, sticky=tk.E)
 
+        self.lb_method = tk.Label(self.fm_new_trial)
+        self.lb_method["text"] = "Randomization Method"
+        self.lb_method.grid(row=3, column=0, padx=2, pady=2, sticky=tk.E)
 
         self.lb_groupa = tk.Label(self.fm_new_trial)
         self.lb_groupa["text"] = "Group A"
-        self.lb_groupa.grid(row=3, column=0, padx=2, pady=2, sticky=tk.E)
+        self.lb_groupa.grid(row=4, column=0, padx=2, pady=2, sticky=tk.E)
 
         self.lb_groupb = tk.Label(self.fm_new_trial)
         self.lb_groupb["text"] = "Group B"
-        self.lb_groupb.grid(row=4, column=0, padx=2, pady=2, sticky=tk.E)
+        self.lb_groupb.grid(row=5, column=0, padx=2, pady=2, sticky=tk.E)
 
         self.lb_samplesize = tk.Label(self.fm_new_trial)
         self.lb_samplesize["text"] = "Sample size (> 5)"
-        self.lb_samplesize.grid(row=5, column=0, padx=2, pady=2, sticky=tk.E)
+        self.lb_samplesize.grid(row=6, column=0, padx=2, pady=2, sticky=tk.E)
 
         self.lb_list_box = tk.Label(self.fm_new_trial)
         self.lb_list_box["text"] = 'Institution'
-        self.lb_list_box.grid(row=6, column=0, padx=2, pady=2, sticky=tk.E)
+        self.lb_list_box.grid(row=7, column=0, padx=2, pady=2, sticky=tk.E)
 
         # list box
         self.sample_institution = ['Hospital A', 'Hospital B', 'Hospital C']
@@ -295,22 +320,22 @@ class Application(tk.Frame):
         self.lsbx_in = tk.Listbox(
             self.fm_new_trial, listvariable=self.txt, width=15, height=5)
 
-        self.lsbx_in.grid(row=6, column=1, padx=2, pady=2, sticky=tk.W)
+        self.lsbx_in.grid(row=7, column=1, padx=2, pady=2, sticky=tk.W)
 
         # Entory box for list box
         self.en_in_plus = tk.Entry(self.fm_new_trial, width = 15)
-        self.en_in_plus.grid(row=7, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_in_plus.grid(row=8, column=1, padx=2, pady=2, sticky=tk.W)
 
         # Bt for list box
         ## Add
         self.bt_add_in = tk.Button(self.fm_new_trial, command=self.AddInstitute)
         self.bt_add_in["text"] = "Add Institution"
-        self.bt_add_in.grid(row=7, column=3, padx=2, pady=2, sticky=tk.W)
+        self.bt_add_in.grid(row=8, column=3, padx=2, pady=2, sticky=tk.W)
 
         ## Delete
         self.bt_delete_in = tk.Button(self.fm_new_trial, command=self.DeleteInstitute)
         self.bt_delete_in["text"] = "Delete Institution"
-        self.bt_delete_in.grid(row=6, column=3, padx=2, pady=2, sticky=tk.W+tk.S)
+        self.bt_delete_in.grid(row=7, column=3, padx=2, pady=2, sticky=tk.W+tk.S)
 
         ##
         # Entry box
@@ -326,28 +351,32 @@ class Application(tk.Frame):
         self.en_contact.grid(row=2, column=1, padx=2, pady=2, sticky=tk.W)
         self.en_contact.insert(tk.END, 'Contact')
 
+        self.en_method = tk.Entry(self.fm_new_trial, width=15)
+        self.en_method.grid(row=3, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_method.insert(tk.END, 'Randomization Method')
+
         self.en_groupa = tk.Entry(self.fm_new_trial, width=15)
-        self.en_groupa.grid(row=3, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_groupa.grid(row=4, column=1, padx=2, pady=2, sticky=tk.W)
         self.en_groupa.insert(tk.END, 'Control group')
 
         self.en_groupb = tk.Entry(self.fm_new_trial, width=15)
-        self.en_groupb.grid(row=4, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_groupb.grid(row=5, column=1, padx=2, pady=2, sticky=tk.W)
         self.en_groupb.insert(tk.END, 'Treatment group')
 
         self.en_samplesize = tk.Entry(
             self.fm_new_trial, width=15, textvariable=tk.IntVar(value=100))
-        self.en_samplesize.grid(row=5, column=1, padx=2, pady=2, sticky=tk.W)
+        self.en_samplesize.grid(row=6, column=1, padx=2, pady=2, sticky=tk.W)
 
         # bt
         self.bt_save_new_trial = tk.Button(self.fm_new_trial, command=self.SaveNewTrial)
         self.bt_save_new_trial["text"] = 'Save New Trial'
         self.bt_save_new_trial.grid(
-            row=8, column=3, padx=2, pady=2, sticky=tk.W)
+            row=9, column=3, padx=2, pady=2, sticky=tk.W)
         self.bt_cancel_new_trial = tk.Button(self.fm_new_trial)
         self.bt_cancel_new_trial["text"] = 'Cancel'
         self.bt_cancel_new_trial["command"] = self.CancelNewTrial
         self.bt_cancel_new_trial.grid(
-            row=8, column=4, padx=2, pady=2, sticky=tk.W)
+            row=9, column=4, padx=2, pady=2, sticky=tk.W)
 
     def AddInstitute(self):
         new_institute = self.en_in_plus.get()
@@ -384,27 +413,27 @@ class Application(tk.Frame):
                         "principal investigator": self.en_pi.get(),
                         "contact": self.en_contact.get(),
                         "number": self.en_samplesize.get(),
-                        "randomization": "Simple randomization",
+                        "randomization": self.en_method.get(),
                         "institution": self.lsbx_in.get(0, tk.END)}}
                 print(dict)
                 json.dump(dict, self.f)
             self.new_trial_window.destroy()
 
-            json_dict = json_manager.get_json_object()
+            json_dict = self.json_manager.get_json_object()
 
             # Data from Json
             Contact = json_dict['study_preferences']['contact']
             Number = int(json_dict['study_preferences']['number'])
-            Rondomization = json_dict['study_preferences']['randomization']
+            Randomization = json_dict['study_preferences']['randomization']
             PI = json_dict['study_preferences']['principal investigator']
             Trial = json_dict['study_preferences']['trial']
             Institution = json_dict['study_preferences']['institution']
 
             self.List_in = Institution
             self.spbox_in["value"] = self.List_in
-            
+
             #ANCHOR reopen_main_window
-            
+
             self.delete_all_tree()
             logging.info(msg='do the create widgets')
             self.lb_header_trial.grid_remove()
@@ -416,15 +445,15 @@ class Application(tk.Frame):
             self.lb_header_n = tk.Label(self.fm_header)
             self.lb_header_n["text"] = "Target sample size: " + str(Number)
             self.lb_header_n.grid(row=1, column=0, padx=2, pady=2, sticky=tk.W)
-            
+
             logging.info(msg='end the create widgets')
-            dm.reconnect()
+            self.dm.reconnect()
 
     def CancelNewTrial(self):
         self.new_trial_window.destroy()
 
     def AddCase(self):
-        self.ProgressBarLength = get_progress_bar_length()
+        self.ProgressBarLength = self.get_progress_bar_length()
         if self.ProgressBarLength >= 1:
             self.mes_warning_number = messagebox.showwarning(
                 "Warning", "The enrollment is now over.")
@@ -451,8 +480,8 @@ class Application(tk.Frame):
                                                     This operation cannot be undone.", icon='warning')
                 print(self.mes_add_confirmation)
                 if self.mes_add_confirmation == 'yes':
-                    dm.add_case(HospitalName=self.txt_HospitalName,
-                                HospitalID=self.txt_HospitalID, PatientName=self.txt_PatientName)
+                    self.dm.add_case(HospitalName=self.txt_HospitalName,
+                                HospitalID=self.txt_HospitalID, PatientName=self.txt_PatientName, Method=self.Randomization)
                     # dm.print_db()
                     self.mes_success = messagebox.showinfo(
                         "Info", "New case is now added and assined, successfully.")
@@ -462,7 +491,7 @@ class Application(tk.Frame):
                     self.get_db_into_tree()
 
                     # NOTE Progress bar is showing by rewriti the code of Progress bar.
-                    self.ProgressBarLength = get_progress_bar_length()
+                    self.ProgressBarLength = self.get_progress_bar_length()
 
                     logging.info(msg="Progressbar"+str(self.ProgressBarLength))
                     self.s = ttk.Style()
@@ -491,7 +520,7 @@ class Application(tk.Frame):
                                       pady=2, sticky=(tk.N, tk.E, tk.S, tk.W))
 
                     self.lb_header_max = tk.Label(self.fm_prs_bar)
-                    self.lb_header_max["text"] = str(Number)
+                    self.lb_header_max["text"] = str(self.Number)
                     self.lb_header_max.grid(
                         row=0, column=2, padx=2, pady=2, sticky=tk.W + tk.E)
                 else:

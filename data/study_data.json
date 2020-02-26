@@ -1,1 +1,1 @@
-{"study_groups": {"GroupA": "Control group", "GroupB": "Treatment group"}, "study_preferences": {"trial": "Hoge", "principal investigator": "Name", "contact": "Contact", "number": "100", "randomization": "Simple randomization", "institution": ["Hospital A", "Hospital B", "Hospital C"]}}
+{"study_groups": {"GroupB": "Treatment group", "GroupA": "Control group"}, "study_preferences": {"principal investigator": "Name", "contact": "Contact", "randomization": "block", "number": "100", "institution": ["Hospital A", "Hospital B", "Hospital C"], "trial": "Test Trial"}}
