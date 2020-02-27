@@ -404,8 +404,9 @@ class Application(tk.Frame):
             # # print(arg)
             # shutil.copy('../data/study_data.json', arg0)
             # shutil.copy('../data/patient.db', arg1)
-            # os.remove('../data/patient.db')
-            # subprocess.call(shlex.split("touch ../data/patient.db"))
+
+            os.remove('../data/patient.db')
+            subprocess.call(shlex.split("touch ../data/patient.db"))
 
             with open('../data/study_data.json',"w") as self.f:
                 dict = {"study_groups": {"GroupA": self.en_groupa.get(), "GroupB": self.en_groupb.get()},
@@ -438,7 +439,7 @@ class Application(tk.Frame):
             logging.info(msg='do the create widgets')
             self.lb_header_trial.grid_remove()
             self.lb_header_trial = tk.Label(self.fm_header)
-            self.lb_header_trial["text"] = "Trial: "+Trial
+            self.lb_header_trial["text"] = "Trial: " + Trial
             self.lb_header_trial.grid(row=0, column=0, padx=2, pady=2, sticky=tk.W)
 
             self.lb_header_n.grid_remove()
