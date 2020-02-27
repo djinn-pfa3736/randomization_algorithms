@@ -30,6 +30,11 @@ class DataManager(object):
         self.conn = sqlite3.connect("../data/patient.db")
         self.cursor = self.conn.cursor()
 
+        self.cursor.execute(
+            "CREATE TABLE IF NOT EXISTS assignment (id INTEGER PRIMARY KEY \
+        AUTOINCREMENT, recruted_date TEXT,hospital TEXT,hospital_id TEXT,\
+        patient_name TEXT, assign TEXT, exclusion INTEGER)")
+
         a_count, b_count = self.get_assign_all()
         self.randomization = randomization.Randomize(10, a_count, b_count)
         self.cursor.execute(
@@ -65,6 +70,8 @@ class DataManager(object):
             self.assigned_group = self.randomization.simple_randomization()
         elif(Method == 'block'):
             self.assigned_group = self.randomization.block_randomization()
+        else:
+            print("ERROR!! Choose method simple or block.")
         self.tm=get_date.TimeManager()
         self.HospitalName= HospitalName
         self.PatientName = PatientName

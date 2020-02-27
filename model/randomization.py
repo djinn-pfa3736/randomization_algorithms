@@ -37,16 +37,17 @@ class Randomize:
         # * get random variable 0-1
         if(self.block_a_count + self.block_b_count < self.block_size):
             diff = self.block_a_count - self.block_b_count
-            if(abs(diff) == self.block_size - (self.block_a_count + self.block_b_count)):
+            res_size = self.block_size - (self.block_a_count + self.block_b_count)
+            if(abs(diff) == res_size):
                 if(diff > 0):
                     self.AssignedGroup = self.json_dict['study_groups']['GroupB']
                     print(self.AssignedGroup)
-                    self.block_a_count += 1
+                    self.block_b_count += 1
                     return(self.AssignedGroup)
                 else:
                     self.AssignedGroup = self.json_dict['study_groups']['GroupA']
                     print(self.AssignedGroup)
-                    self.block_b_count += 1
+                    self.block_a_count += 1
                     return(self.AssignedGroup)
             else:
                 if random.random() > 0.5:
